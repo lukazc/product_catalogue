@@ -1,8 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 import { Category } from '../models/category.model';
+
+interface FilterParams {
+  sortBy?: keyof Product;
+  order?: 'asc' | 'desc';
+  limit?: number;
+  skip?: number;
+  select?: keyof Product;
+  q?: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -24,19 +33,21 @@ export class ProductService {
     return this.http.get<Category[]>(`${this.baseUrl}/products/categories`);
   }
 
-  sortProducts(sortBy: string, order: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.baseUrl}/products`, { params: { sortBy, order } });
-  }
+  /**
+   * Fetches products with optional filtering parameters.
+   * @param params - The filtering parameters.
+   * @returns An Observable of filtered products.
+   */
+  getFilteredProducts(params: FilterParams = {}): Observable<Product[]> {
+    const endpoint = params.q ? 'products/search' : 'products';
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach(key => {
+      const value = params[key as keyof FilterParams];
+      if (value !== undefined) {
+        httpParams = httpParams.set(key, value);
+      }
+    });
 
-  limitAndSkipProducts(limit: number, skip: number): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.baseUrl}/products`, { params: { limit, skip } });
-  }
-
-  selectProducts(select: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.baseUrl}/products`, { params: { select } });
-  }
-
-  searchProducts(query: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.baseUrl}/products/search`, { params: { q: query } });
+    return this.http.get<Product[]>(`${this.baseUrl}/${endpoint}`, { params: httpParams });
   }
 }
