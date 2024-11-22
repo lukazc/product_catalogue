@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductStateService } from '../../state/product-state.service';
 import { CommonModule } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 type SortValue = 'price_asc' | 'price_desc' | 'title_asc' | 'title_desc';
 
@@ -13,12 +14,13 @@ const SORT_OPTIONS: { value: SortValue, label: string }[] = [
 
 @Component({
     selector: 'app-sort',
-    imports: [CommonModule],
+    imports: [CommonModule, MatIcon],
     templateUrl: './sort.component.html',
     styleUrls: ['./sort.component.scss']
 })
 export class SortComponent {
     sortOptions = SORT_OPTIONS;
+
     constructor(private productStateService: ProductStateService) { }
 
     onSortChange(event: Event): void {
@@ -38,6 +40,7 @@ export class SortComponent {
                 this.productStateService.setSortFilter('title', 'desc');
                 break;
             default:
+                this.productStateService.clearSortFilter();
                 break;
         }
     }

@@ -1,0 +1,40 @@
+.sort-select {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+    position: relative;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.sort-select-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+    position: relative;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.sort-select-container select {
+    width: auto;
+    padding: 10px 40px 10px 10px;
+    border: none;
+    box-shadow: none;
+    font-size: 16px;
+    appearance: none;
+    background: none;
+    position: relative;
+    cursor: pointer;
+}
+
+.sort-select-container select:focus {
+    outline: none;
+}
+
+.sort-select-container .mat-icon {
+    font-size: 22px;
+    color: #aaa;
+}

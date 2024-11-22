@@ -74,4 +74,12 @@ export class ProductStateService {
         this.setFilterParams({ ...currentParams, sortBy, order });
         this.loadProducts();
     }
+
+    clearSortFilter() {
+        const currentParams = this.filterParamsSubject.value;
+        delete currentParams.sortBy;
+        delete currentParams.order;
+        this.setFilterParams(currentParams);
+        this.loadProducts();
+    }
 }
