@@ -10,6 +10,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 export class PaginationComponent {
     @Input() totalItems: number = 0;
     @Input() pageSize: number = 20;
+    @Input() currentPage: number = 1;
     @Output() pageChange = new EventEmitter<number>();
     @Output() pageSizeChange = new EventEmitter<number>();
 
