@@ -10,6 +10,9 @@ const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20 };
     providedIn: 'root'
 })
 export class ProductStateService {
+    private isLoadingSubject = new BehaviorSubject<boolean>(false);
+    public isLoading$ = this.isLoadingSubject.asObservable();
+
     private productsSubject = new BehaviorSubject<Product[]>([]);
     public products$ = this.productsSubject.asObservable();
 
@@ -19,6 +22,7 @@ export class ProductStateService {
     constructor(private productService: ProductService) { }
 
     loadProducts(): void {
+        this.isLoadingSubject.next(true);
         if(Object.keys(this.filterParamsSubject.value)) {
             this.loadFilteredProducts(this.filterParamsSubject.value).subscribe();
         } else {
@@ -40,6 +44,7 @@ export class ProductStateService {
 
     setProducts(products: Product[]) {
         this.productsSubject.next(products);
+        this.isLoadingSubject.next(false);
     }
 
     clearProducts() {
