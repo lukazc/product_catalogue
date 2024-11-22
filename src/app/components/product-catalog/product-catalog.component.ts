@@ -10,6 +10,7 @@ import { FiltersDialogComponent } from '../filters-dialog/filters-dialog.compone
 import { FiltersComponent } from '../filters/filters.component';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { ProductDetailModalComponent } from '../product-detail-modal/product-detail-modal.component';
 
 @Component({
     selector: 'app-product-catalog',
@@ -50,6 +51,15 @@ export class ProductCatalogComponent implements OnInit {
             height: '80%',
             position: { bottom: '0' },
             panelClass: 'filters-dialog'
+        });
+    }
+
+    openProductDetailsModal(product: Product): void {
+        this.dialog.open(ProductDetailModalComponent, {
+            data: { productId: product.id },
+            width: '100%',
+            height: '80%',
+            panelClass: 'product-detail-modal'
         });
     }
 

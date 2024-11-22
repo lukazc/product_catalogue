@@ -13,7 +13,7 @@
         <ng-template #productGridTemplate>
             <ng-container *ngIf="products$ | async as products">
                 <ng-container *ngIf="products.length; else noProductsTemplate">
-                    <app-product-card *ngFor="let product of products$ | async" [product]="product"></app-product-card>
+                    <app-product-card (click)="openProductDetailsModal(product)" *ngFor="let product of products$ | async" [product]="product"></app-product-card>
                 </ng-container>
                 <ng-template #noProductsTemplate>
                     <div class="no-products-message">0 products found.</div>
