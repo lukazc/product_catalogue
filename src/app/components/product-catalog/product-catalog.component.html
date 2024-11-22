@@ -22,6 +22,7 @@
         </ng-template>
     </div>
 </div>
+<app-pagination [totalItems]="(totalItems$ | async) || 0" [pageSize]="(pageSize$ | async) || 0" (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)"></app-pagination>
 
 <ng-template #filtersDialog>
     <app-filters></app-filters>

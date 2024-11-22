@@ -26,6 +26,12 @@ export class ProductStateService {
     private resetFiltersSubject = new BehaviorSubject<void>(undefined);
     public resetFilters$ = this.resetFiltersSubject.asObservable();
 
+    private totalItemsSubject = new BehaviorSubject<number>(0);
+    public totalItems$ = this.totalItemsSubject.asObservable();
+
+    private currentPageSubject = new BehaviorSubject<number>(1);
+    public currentPage$ = this.currentPageSubject.asObservable();
+
     public categoryName$: Observable<string | undefined> = combineLatest([
         this.productCategories$,
         this.filterParams$
@@ -45,11 +51,8 @@ export class ProductStateService {
 
     loadProducts(): void {
         this.isLoadingSubject.next(true);
-        if (Object.keys(this.filterParamsSubject.value)) {
-            this.loadFilteredProducts(this.filterParamsSubject.value).subscribe();
-        } else {
-            this.loadAllProducts().subscribe();
-        }
+        const params = { ...this.filterParamsSubject.value, limit: this.filterParamsSubject.value.limit, skip: (this.currentPageSubject.value - 1) * (this.filterParamsSubject.value.limit || 20) };
+        this.loadFilteredProducts(params).subscribe();
     }
 
     loadAllProducts(): Observable<ProductApiResponse> {
@@ -60,7 +63,10 @@ export class ProductStateService {
 
     loadFilteredProducts(params: FilterParams): Observable<ProductApiResponse> {
         return this.productService.getFilteredProducts(params).pipe(
-            tap(response => this.setProducts(response.products))
+            tap(response => {
+                this.setProducts(response.products);
+                this.totalItemsSubject.next(response.total);
+            })
         );
     }
 
@@ -82,14 +88,19 @@ export class ProductStateService {
     setFilterParams(params: FilterParams) {
         if (this.isResettingFilters) return;
         this.filterParamsSubject.next(params);
+        this.currentPageSubject.next(1);
         this.loadProducts();
     }
 
     clearFilterParams() {
-        this.isResettingFilters = true;
+        this.pauseFilters();
         this.filterParamsSubject.next(DEFAULT_FILTER_PARAMS);
         this.resetFiltersSubject.next();
         this.loadProducts();
+    }
+
+    pauseFilters() {
+        this.isResettingFilters = true;
         setTimeout(() => {
             this.isResettingFilters = false;
         }, 200);
@@ -115,6 +126,21 @@ export class ProductStateService {
         delete currentParams.sortBy;
         delete currentParams.order;
         this.setFilterParams(currentParams);
+        this.loadProducts();
+    }
+
+    setPage(page: number) {
+        if (this.isResettingFilters) return;
+        this.currentPageSubject.next(page);
+        this.loadProducts();
+    }
+
+    setPageSize(size: number) {
+        if (this.isResettingFilters) return;
+        if (size === this.filterParamsSubject.value.limit) return;
+        const currentParams = this.filterParamsSubject.value;
+        this.filterParamsSubject.next({ ...currentParams, limit: size });
+        this.currentPageSubject.next(1);
         this.loadProducts();
     }
 }
