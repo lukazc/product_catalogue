@@ -1,8 +1,8 @@
 <mat-card>
-    <img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}">
-    <mat-card-title>{{ product.name }}</mat-card-title>
+    <img mat-card-image [src]="product.thumbnail" alt="{{ product.title }}">
     <mat-card-subtitle>{{ product.price | currency }}</mat-card-subtitle>
+    <mat-card-title>{{ product.title }}</mat-card-title>
     <mat-card-content>
-        <p>{{ product.description }}</p>
+        <p>{{ product.description | slice:0:100 }}{{ product.description.length > 100 ? '...' : '' }}</p>
     </mat-card-content>
 </mat-card>
