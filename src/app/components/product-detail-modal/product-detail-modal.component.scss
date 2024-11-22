@@ -64,13 +64,16 @@ mat-dialog-content {
 
 .carousel-item img.thumbnail {
     filter: blur(10px);
+    height: 400px;
 }
 
 .carousel-item img.full {
     visibility: hidden;
+    height: 0;
 
     &.loaded {
         visibility: visible;
+        height: 400px;
     }
 }
 
