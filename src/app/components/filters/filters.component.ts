@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { PriceFilterComponent } from '../price-filter/price-filter.component';
 import { SelectComponent, SelectOption } from '../select/select.component';
 import { ProductStateService } from '../../state/product-state.service';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 
@@ -30,16 +30,15 @@ const SORT_OPTIONS: SelectOption[] = [
 export class FiltersComponent {
     sortOptions = SORT_OPTIONS;
 
-    get categoryOptions(): Observable<SelectOption[]> {
-        return this.productStateService.productCategories$.pipe(
-            map(categories => categories.map(category => ({ value: category.slug, label: category.name })))
-        )
-    }
+    categoryOptions: SelectOption[] = [];
 
     areFiltersActive$: Observable<boolean>;
 
     constructor(private productStateService: ProductStateService) {
         this.areFiltersActive$ = this.productStateService.areFiltersActive$;
+        productStateService.productCategories$.pipe(take(2)).subscribe(categories => {
+            this.categoryOptions = categories.map(category => ({ value: category.slug, label: category.name }));
+        });
     }
 
     onSortChange(value: string): void {
