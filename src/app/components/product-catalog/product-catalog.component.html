@@ -6,12 +6,12 @@
     <app-filters></app-filters>
     <div class="responsive-grid">
         <ng-container *ngIf="isLoading$ | async; else productGridTemplate">
-            <div class="placeholder" *ngFor="let n of [].constructor(20); let i = index"></div>
+            <div *ngFor="let n of [].constructor(20)" class="placeholder-container">
+                <div class="placeholder"></div>
+            </div>
         </ng-container>
         <ng-template #productGridTemplate>
-            <div *ngFor="let product of products$ | async">
-                <app-product-card [product]="product"></app-product-card>
-            </div>
+            <app-product-card *ngFor="let product of products$ | async" [product]="product"></app-product-card>
         </ng-template>
     </div>
 </div>
