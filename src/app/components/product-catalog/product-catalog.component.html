@@ -1,5 +1,5 @@
 <div class="responsive-grid">
-    <div *ngFor="let product of products">
+    <div *ngFor="let product of products$ | async">
         <app-product-card [product]="product"></app-product-card>
     </div>
 </div>
