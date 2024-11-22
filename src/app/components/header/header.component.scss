@@ -1,6 +1,6 @@
 mat-toolbar {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 }
 
@@ -24,5 +24,19 @@ mat-toolbar {
 
     app-search-bar {
         width: 100%;
+    }
+}
+
+.mobile-search-bar {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .desktop {
+        display: none;
+    }
+
+    .mobile-search-bar {
+        display: flex;
     }
 }
