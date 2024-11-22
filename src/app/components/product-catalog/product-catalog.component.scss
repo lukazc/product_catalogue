@@ -48,22 +48,13 @@
         rgb(255, 248, 248, 0.5) 75%
     );
     background-size: 200% 200%;
-    animation: sheen 1.5s infinite;
+    animation: sheen 2s infinite;
 }
 
 @media (max-width: 600px) {
     .placeholder {
         width: 150px;
         height: 324px;
-    }
-}
-
-@keyframes sheen {
-    0% {
-        background-position: 200% 0;
-    }
-    100% {
-        background-position: -200% 0;
     }
 }
 
@@ -74,7 +65,7 @@
     text-align: center;
 }
 
-#filtersDialogButton {
+.filtersDialogButton {
     display: none;
     @media screen and (max-width: 600px) {
         display: block;
@@ -86,4 +77,5 @@
     color: var(--gray-700);
     font-weight: 500;
     margin-left: 16px;
+    grid-column: span 2;
 }

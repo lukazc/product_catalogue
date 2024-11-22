@@ -3,6 +3,7 @@
     justify-content: center;
 }
 mat-card {
+    animation: fadeIn 0.5s forwards;
     width: 250px;
     height: 450px;
     display: flex;

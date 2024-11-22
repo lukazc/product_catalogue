@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { FilterParams } from '../../models/filter-params.model';
 import { Product } from '../../models/product.model';
 import { ProductStateService } from '../../state/product-state.service';
@@ -10,10 +10,12 @@ import { FiltersDialogComponent } from '../filters-dialog/filters-dialog.compone
 import { FiltersComponent } from '../filters/filters.component';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { ProductDetailModalComponent } from '../product-detail-modal/product-detail-modal.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-product-catalog',
-    imports: [CommonModule, ProductCardComponent, FiltersComponent, PaginationComponent],
+    imports: [CommonModule, ProductCardComponent, FiltersComponent, PaginationComponent, MatButton],
     templateUrl: './product-catalog.component.html',
     styleUrls: ['./product-catalog.component.scss']
 })
@@ -27,7 +29,9 @@ export class ProductCatalogComponent implements OnInit {
     pageSize$: Observable<number | undefined>;
 
     constructor(private productStateService: ProductStateService, private dialog: MatDialog) {
-        this.products$ = this.productStateService.products$;
+        this.products$ = this.productStateService.products$.pipe(tap(products => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }));
         this.filterParams$ = this.productStateService.filterParams$;
         this.categoryName$ = this.productStateService.categoryName$;
         this.isLoading$ = this.productStateService.isLoading$;
@@ -50,6 +54,19 @@ export class ProductCatalogComponent implements OnInit {
             height: '80%',
             position: { bottom: '0' },
             panelClass: 'filters-dialog'
+        });
+    }
+
+    clearFilters(): void {
+        this.productStateService.clearFilterParams();
+    }
+
+    openProductDetailsModal(product: Product): void {
+        this.dialog.open(ProductDetailModalComponent, {
+            data: { productId: product.id },
+            width: '80%',
+            height: '90%',
+            panelClass: 'product-detail-modal'
         });
     }
 

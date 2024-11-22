@@ -177,4 +177,8 @@ export class ProductStateService {
         this.currentPageSubject.next(1);
         this.loadProducts();
     }
+
+    getProductById(productId: number): Observable<Product> {
+        return this.productService.getProductById(productId);
+    }
 }
