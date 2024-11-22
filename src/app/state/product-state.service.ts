@@ -1,33 +1,56 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Product } from '../models/product.model';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Product, ProductApiResponse } from '../models/product.model';
 import { FilterParams } from '../models/filter-params.model';
+import { ProductService } from '../services/product.service';
+
+const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20 };
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ProductStateService {
-  private productsSubject = new BehaviorSubject<Product[]>([]);
-  products$ = this.productsSubject.asObservable();
+    private productsSubject = new BehaviorSubject<Product[]>([]);
+    public products$ = this.productsSubject.asObservable();
 
-  private filterParamsSubject = new BehaviorSubject<FilterParams>({});
-  filterParams$ = this.filterParamsSubject.asObservable();
+    private filterParamsSubject = new BehaviorSubject<FilterParams>(DEFAULT_FILTER_PARAMS);
+    public filterParams$ = this.filterParamsSubject.asObservable();
 
-  constructor() { }
+    constructor(private productService: ProductService) { }
 
-  setProducts(products: Product[]) {
-    this.productsSubject.next(products);
-  }
+    loadProducts(): void {
+        if(Object.keys(this.filterParamsSubject.value)) {
+            this.loadFilteredProducts(this.filterParamsSubject.value).subscribe();
+        } else {
+            this.loadAllProducts().subscribe();
+        }
+    }
 
-  clearProducts() {
-    this.productsSubject.next([]);
-  }
+    loadAllProducts(): Observable<ProductApiResponse> {
+        return this.productService.getAllProducts().pipe(
+            tap(response => this.setProducts(response.products))
+        );
+    }
 
-  setFilterParams(params: FilterParams) {
-    this.filterParamsSubject.next(params);
-  }
+    loadFilteredProducts(params: FilterParams): Observable<ProductApiResponse> {
+        return this.productService.getFilteredProducts(params).pipe(
+            tap(response => this.setProducts(response.products))
+        );
+    }
 
-  clearFilterParams() {
-    this.filterParamsSubject.next({});
-  }
+    setProducts(products: Product[]) {
+        this.productsSubject.next(products);
+    }
+
+    clearProducts() {
+        this.productsSubject.next([]);
+    }
+
+    setFilterParams(params: FilterParams) {
+        this.filterParamsSubject.next(params);
+    }
+
+    clearFilterParams() {
+        this.filterParamsSubject.next({});
+    }
 }

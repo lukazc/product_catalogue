@@ -14,10 +14,9 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getAllProducts(): Observable<Product[]> {
+  getAllProducts(): Observable<ProductApiResponse> {
     const params = new HttpParams().set('limit', '0');
-    return this.http.get<ProductApiResponse>(`${this.baseUrl}/products`, { params })
-      .pipe(map(response => response.products));
+    return this.http.get<ProductApiResponse>(`${this.baseUrl}/products`, { params });
   }
 
   getProductById(id: number): Observable<Product> {
@@ -33,7 +32,7 @@ export class ProductService {
    * @param params - The filtering parameters.
    * @returns An Observable of filtered products.
    */
-  getFilteredProducts(params: FilterParams = {}): Observable<Product[]> {
+  getFilteredProducts(params: FilterParams = {}): Observable<ProductApiResponse> {
     const endpoint = params.q ? 'products/search' : 'products';
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
@@ -43,8 +42,7 @@ export class ProductService {
       }
     });
 
-    return this.http.get<ProductApiResponse>(`${this.baseUrl}/${endpoint}`, { params: httpParams })
-        .pipe(map(response => response.products));
+    return this.http.get<ProductApiResponse>(`${this.baseUrl}/${endpoint}`, { params: httpParams });
   }
 
   /**
