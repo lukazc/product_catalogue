@@ -8,7 +8,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 @Component({
   selector: 'app-product-catalog',
   standalone: true,
-  imports: [CommonModule, MatGridListModule, MatCardModule, ProductCardComponent],
+  imports: [CommonModule, ProductCardComponent],
   templateUrl: './product-catalog.component.html',
   styleUrls: ['./product-catalog.component.scss']
 })
