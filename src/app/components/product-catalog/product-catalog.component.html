@@ -1,8 +1,10 @@
 <div class="responsive-grid">
-    <ng-container *ngIf="isLoading$ | async">
+    <ng-container *ngIf="isLoading$ | async; else productGridTemplate">
         <div class="placeholder" *ngFor="let n of [].constructor(20); let i = index"></div>
     </ng-container>
-    <div *ngFor="let product of products$ | async">
-        <app-product-card [product]="product"></app-product-card>
-    </div>
+    <ng-template #productGridTemplate>
+        <div *ngFor="let product of products$ | async">
+            <app-product-card [product]="product"></app-product-card>
+        </div>
+    </ng-template>
 </div>
