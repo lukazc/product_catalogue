@@ -1,41 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
-import { debounceTime } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProductStateService } from '../../state/product-state.service';
 
 @Component({
-  selector: 'app-price-filter',
-  templateUrl: './price-filter.component.html',
-  styleUrls: ['./price-filter.component.scss'],
-  imports: [MatSliderModule, ReactiveFormsModule]
+    selector: 'app-price-filter',
+    templateUrl: './price-filter.component.html',
+    styleUrls: ['./price-filter.component.scss'],
+    imports: [MatSliderModule, ReactiveFormsModule]
 })
-export class PriceFilterComponent implements OnInit {
-  priceForm: FormGroup;
+export class PriceFilterComponent implements OnInit, OnDestroy {
+    priceForm: FormGroup;
+    private resetFiltersSubscription: Subscription;
 
-  constructor(private fb: FormBuilder, private productStateService: ProductStateService) {
-    this.priceForm = this.fb.group({
-      priceMin: [0],
-      priceMax: [40000]
-    });
-  }
+    constructor(private fb: FormBuilder, private productStateService: ProductStateService) {
+        this.priceForm = this.fb.group({
+            priceMin: [0],
+            priceMax: [40000]
+        });
 
-  ngOnInit(): void {
-    this.priceForm.valueChanges.pipe(
-      debounceTime(300)
-    ).subscribe(values => {
-      this.productStateService.setFilterParams({
-        priceMin: values.priceMin,
-        priceMax: values.priceMax
-      });
-    });
-  }
-
-  formatLabel(value: number): string {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
+        this.resetFiltersSubscription = this.productStateService.resetFilters$.subscribe(() => {
+            this.priceForm.setValue({ priceMin: 0, priceMax: 40000 }, { emitEvent: false });
+        });
     }
 
-    return `${value}`;
-  }
+    ngOnInit(): void {
+        this.priceForm.valueChanges.pipe(
+            debounceTime(300),
+            distinctUntilChanged()
+        ).subscribe(values => {
+            this.productStateService.setFilterParams({
+                priceMin: values.priceMin,
+                priceMax: values.priceMax
+            });
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.resetFiltersSubscription.unsubscribe();
+    }
+
+    formatLabel(value: number): string {
+        if (value >= 1000) {
+            return Math.round(value / 1000) + 'k';
+        }
+
+        return `${value}`;
+    }
 }
