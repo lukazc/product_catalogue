@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductService } from '../../services/product.service';
 import { ProductStateService } from '../../state/product-state.service';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { Product } from '../../models/product.model';
 import { Observable } from 'rxjs';
 import { FilterParams } from '../../models/filter-params.model';
+import { SortComponent } from '../sort/sort.component';
 
 @Component({
     selector: 'app-product-catalog',
-    imports: [CommonModule, ProductCardComponent],
+    imports: [CommonModule, ProductCardComponent, SortComponent],
     templateUrl: './product-catalog.component.html',
     styleUrls: ['./product-catalog.component.scss']
 })

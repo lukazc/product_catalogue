@@ -68,4 +68,10 @@ export class ProductStateService {
         this.setFilterParams({ ...currentParams, q: searchTerm });
         this.loadProducts();
     }
+
+    setSortFilter(sortBy: keyof Product, order: 'asc' | 'desc') {
+        const currentParams = this.filterParamsSubject.value;
+        this.setFilterParams({ ...currentParams, sortBy, order });
+        this.loadProducts();
+    }
 }
