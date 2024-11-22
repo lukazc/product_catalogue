@@ -1,3 +1,7 @@
+<div class="catalog-header">
+    {{ (categoryFilter$ | async) || 'All products' }}
+</div>
+<app-sort></app-sort>
 <div class="responsive-grid">
     <ng-container *ngIf="isLoading$ | async; else productGridTemplate">
         <div class="placeholder" *ngFor="let n of [].constructor(20); let i = index"></div>

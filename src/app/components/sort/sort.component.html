@@ -1,1 +1,7 @@
-<p>sort works!</p>
+<div class="sort-select-container">
+    <select #select (change)="onSortChange($event)">
+        <option value="">Sort by</option>
+        <option *ngFor="let sort of sortOptions" [value]="sort.value">{{ sort.label }}</option>
+    </select>
+    <mat-icon (click)="select.showPicker()">arrow_drop_down</mat-icon>
+</div>

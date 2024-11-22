@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { Product, ProductApiResponse } from '../models/product.model';
 import { FilterParams } from '../models/filter-params.model';
 import { ProductService } from '../services/product.service';
@@ -18,6 +18,10 @@ export class ProductStateService {
 
     private filterParamsSubject = new BehaviorSubject<FilterParams>(DEFAULT_FILTER_PARAMS);
     public filterParams$ = this.filterParamsSubject.asObservable();
+
+    public categoryFilter$: Observable<string | undefined> = this.filterParams$.pipe(
+        map(params => params.category)
+    );
 
     constructor(private productService: ProductService) { }
 
@@ -62,6 +66,20 @@ export class ProductStateService {
     setSearchFilter(searchTerm: string) {
         const currentParams = this.filterParamsSubject.value;
         this.setFilterParams({ ...currentParams, q: searchTerm });
+        this.loadProducts();
+    }
+
+    setSortFilter(sortBy: keyof Product, order: 'asc' | 'desc') {
+        const currentParams = this.filterParamsSubject.value;
+        this.setFilterParams({ ...currentParams, sortBy, order });
+        this.loadProducts();
+    }
+
+    clearSortFilter() {
+        const currentParams = this.filterParamsSubject.value;
+        delete currentParams.sortBy;
+        delete currentParams.order;
+        this.setFilterParams(currentParams);
         this.loadProducts();
     }
 }
