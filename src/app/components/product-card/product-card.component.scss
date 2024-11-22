@@ -1,0 +1,93 @@
+:host {
+    display: flex;
+    justify-content: center;
+}
+mat-card {
+    width: 250px;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 0;
+    box-shadow: none;
+    transition:
+        transform 0.125s ease,
+        box-shadow 0.125s ease;
+
+    background-color: white;
+}
+
+mat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+mat-card img {
+    object-fit: cover;
+    width: 250px;
+    height: 250px;
+    margin-bottom: 8px;
+}
+
+mat-card-title,
+mat-card-subtitle {
+    padding: 0 16px;
+}
+
+mat-card-title {
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 500;
+    color: var(--gray-700);
+}
+mat-card-subtitle {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--gray-400);
+}
+
+mat-card-content {
+    flex-grow: 1;
+    padding: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    p {
+        color: var(--gray-700);
+        font-size: 14px;
+        max-width: 100%;
+    }
+}
+
+mat-card-content {
+    padding: 16px;
+}
+
+@media (max-width: 600px) {
+    mat-card {
+        width: 150px;
+        height: auto;
+    }
+
+    mat-card img {
+        width: 150px;
+        height: 150px;
+    }
+
+    mat-card-title {
+        font-size: 16px;
+        line-height: 16px;
+        padding: 0 8px;
+    }
+    mat-card-subtitle {
+        font-size: 12px;
+        padding: 0 8px;
+    }
+    mat-card-content {
+        padding: 8px;
+        p {
+            font-size: 12px;
+        }
+    }
+}

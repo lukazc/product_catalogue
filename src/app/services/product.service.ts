@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from '../models/product.model';
+import { map } from 'rxjs/operators';
+import { Product, ProductApiResponse } from '../models/product.model';
 import { Category } from '../models/category.model';
 import { FilterParams } from '../models/filter-params.model';
 
@@ -15,7 +16,8 @@ export class ProductService {
 
   getAllProducts(): Observable<Product[]> {
     const params = new HttpParams().set('limit', '0');
-    return this.http.get<Product[]>(`${this.baseUrl}/products`, { params });
+    return this.http.get<ProductApiResponse>(`${this.baseUrl}/products`, { params })
+      .pipe(map(response => response.products));
   }
 
   getProductById(id: number): Observable<Product> {
@@ -41,7 +43,8 @@ export class ProductService {
       }
     });
 
-    return this.http.get<Product[]>(`${this.baseUrl}/${endpoint}`, { params: httpParams });
+    return this.http.get<ProductApiResponse>(`${this.baseUrl}/${endpoint}`, { params: httpParams })
+        .pipe(map(response => response.products));
   }
 
   /**
@@ -70,16 +73,21 @@ export class ProductService {
 
       return matches;
     }).sort((a, b) => {
-      if (params.sortBy) {
-        const order = params.order === 'desc' ? -1 : 1;
-        if (a[params.sortBy] < b[params.sortBy]) {
-          return -1 * order;
-        }
-        if (a[params.sortBy] > b[params.sortBy]) {
-          return 1 * order;
-        }
-      }
-      return 0;
+        if (params.sortBy) {
+            const order = params.order === 'desc' ? -1 : 1;
+            const aVal = a[params.sortBy];
+            const bVal = b[params.sortBy];
+            if(aVal === undefined || bVal === undefined) {
+                return 0;
+            }
+            if (aVal < bVal) {
+              return -1 * order;
+            }
+            if (aVal > bVal) {
+              return 1 * order;
+            }
+          }
+          return 0;
     }).slice(params.skip || 0, (params.skip || 0) + (params.limit || products.length));
   }
 }

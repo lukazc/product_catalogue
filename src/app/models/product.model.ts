@@ -4,12 +4,11 @@ export interface Product {
     description: string;
     price: number;
     category: string;
-    image: string;
     discountPercentage: number;
     rating: number;
     stock: number;
     tags: string[];
-    brand: string;
+    brand?: string;
     sku: string;
     weight: number;
     dimensions: {
@@ -37,4 +36,11 @@ export interface Product {
     };
     thumbnail: string;
     images: string[];
+}
+
+export interface ProductApiResponse {
+    limit: number;
+    products: Product[];
+    skip: number;
+    total: number;
 }
