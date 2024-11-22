@@ -33,7 +33,14 @@ export class ProductService {
    * @returns An Observable of filtered products.
    */
   getFilteredProducts(params: FilterParams = {}): Observable<ProductApiResponse> {
-    const endpoint = params.q ? 'products/search' : 'products';
+    let endpoint = 'products';
+    if (params.q) {
+        endpoint = 'products/search';
+    }
+    if (params.category) {
+        endpoint = `products/category/${params.category}`;
+    }
+
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
       const value = params[key as keyof FilterParams];

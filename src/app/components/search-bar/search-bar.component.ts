@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -13,8 +13,8 @@ import { ProductStateService } from '../../state/product-state.service';
     styleUrls: ['./search-bar.component.scss']
 })
 export class SearchBarComponent implements OnDestroy {
+    @Input() searchTerm: string = '';
     @Output() search = new EventEmitter<string>();
-    searchTerm: string = '';
     private searchSubject = new Subject<string>();
     private resetFiltersSubscription: Subscription;
 

@@ -39,6 +39,10 @@ export class ProductStateService {
         map(([categories, filterParams]) => categories.find(category => category.slug === filterParams.category)?.name)
     );
 
+    public currentSearchQuery$: Observable<string> = this.filterParams$.pipe(
+        map(params => params.q || '')
+    );
+
     public areFiltersActive$: Observable<boolean> = this.filterParams$.pipe(
         map(params => JSON.stringify(params) !== JSON.stringify(DEFAULT_FILTER_PARAMS))
     );
@@ -87,7 +91,7 @@ export class ProductStateService {
 
     setFilterParams(params: FilterParams) {
         if (this.isResettingFilters) return;
-        this.filterParamsSubject.next(params);
+        this.filterParamsSubject.next(Object.assign({}, DEFAULT_FILTER_PARAMS, params));
         this.currentPageSubject.next(1);
         this.loadProducts();
     }
@@ -109,7 +113,7 @@ export class ProductStateService {
     setSearchFilter(searchTerm: string) {
         if (this.isResettingFilters) return;
         const currentParams = this.filterParamsSubject.value;
-        this.setFilterParams({ ...currentParams, q: searchTerm });
+        this.setFilterParams({ ...currentParams, q: searchTerm, category: undefined });
         this.loadProducts();
     }
 
