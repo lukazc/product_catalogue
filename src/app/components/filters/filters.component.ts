@@ -6,6 +6,7 @@ import { ProductStateService } from '../../state/product-state.service';
 import { Category } from '../../models/category.model';
 import { map, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { MatDivider } from '@angular/material/divider';
 
 
 type SortValue = 'price_asc' | 'price_desc' | 'title_asc' | 'title_desc';
@@ -24,7 +25,8 @@ const SORT_OPTIONS: SelectOption[] = [
     imports: [
         PriceFilterComponent,
         SelectComponent,
-        CommonModule
+        CommonModule,
+        MatDivider
     ]
 })
 export class FiltersComponent {
