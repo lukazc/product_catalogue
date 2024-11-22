@@ -4,7 +4,7 @@ import { Product, ProductApiResponse } from '../models/product.model';
 import { FilterParams } from '../models/filter-params.model';
 import { ProductService } from '../services/product.service';
 
-const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20 };
+const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 0 };
 
 @Injectable({
     providedIn: 'root'
@@ -57,5 +57,11 @@ export class ProductStateService {
 
     clearFilterParams() {
         this.filterParamsSubject.next({});
+    }
+
+    setSearchFilter(searchTerm: string) {
+        const currentParams = this.filterParamsSubject.value;
+        this.setFilterParams({ ...currentParams, q: searchTerm });
+        this.loadProducts();
     }
 }

@@ -1,3 +1,13 @@
 <mat-toolbar color="primary">
-    <span>Product Catalogue</span>
+    <mat-toolbar-row>
+        <span class="app-title">Product Catalogue</span>
+        <div class="search-bar-container desktop">
+            <app-search-bar (search)="onSearch($event)"></app-search-bar>
+        </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row class="mobile-search-bar">
+        <div class="search-bar-container">
+            <app-search-bar (search)="onSearch($event)"></app-search-bar>
+        </div>
+    </mat-toolbar-row>
 </mat-toolbar>
