@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild, ElementRef } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { ProductStateService } from '../../state/product-state.service';
@@ -19,12 +19,16 @@ export class SelectComponent implements OnDestroy {
     @Input() options: SelectOption[] = [];
     @Input() placeholder: string = 'Select an option';
     @Output() selectionChange = new EventEmitter<string>();
+    @ViewChild('selectElement') selectElement!: ElementRef<HTMLSelectElement>;
 
     private resetFiltersSubscription: Subscription;
 
     constructor(private productStateService: ProductStateService) {
         this.resetFiltersSubscription = this.productStateService.resetFilters$.subscribe(() => {
-            (document.querySelector('select') as HTMLSelectElement).selectedIndex = 0;
+            const element = this.selectElement?.nativeElement;
+            if (element) {
+                element.selectedIndex = 0;
+            }
         });
     }
 
