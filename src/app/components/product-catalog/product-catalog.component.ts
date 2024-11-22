@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductStateService } from '../../state/product-state.service';
-import { ProductCardComponent } from '../product-card/product-card.component';
-import { Product } from '../../models/product.model';
-import { map, Observable, tap } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { FilterParams } from '../../models/filter-params.model';
+import { Product } from '../../models/product.model';
+import { ProductStateService } from '../../state/product-state.service';
+import { FiltersDialogComponent } from '../filters-dialog/filters-dialog.component';
 import { FiltersComponent } from '../filters/filters.component';
+import { ProductCardComponent } from '../product-card/product-card.component';
 
 @Component({
     selector: 'app-product-catalog',
@@ -19,7 +21,7 @@ export class ProductCatalogComponent implements OnInit {
     categoryName$: Observable<string | undefined>;
     isLoading$: Observable<boolean>;
 
-    constructor(private productStateService: ProductStateService) {
+    constructor(private productStateService: ProductStateService, private dialog: MatDialog) {
         this.products$ = this.productStateService.products$;
         this.filterParams$ = this.productStateService.filterParams$;
         this.categoryName$ = this.productStateService.categoryName$;
@@ -35,6 +37,11 @@ export class ProductCatalogComponent implements OnInit {
     }
 
     openFiltersDialog(): void {
-     
+        this.dialog.open(FiltersDialogComponent, {
+            width: '100%',
+            height: '80%',
+            position: { bottom: '0' },
+            panelClass: 'filters-dialog'
+        });
     }
 }
