@@ -1,25 +1,15 @@
-.sort-select {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: auto;
-    position: relative;
-    margin-bottom: 16px;
-    cursor: pointer;
-}
-
 .sort-select-container {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: auto;
+    width: 100%;
     position: relative;
     margin-bottom: 16px;
     cursor: pointer;
 }
 
 .sort-select-container select {
-    width: auto;
+    width: 100%;
     padding: 10px 40px 10px 10px;
     border: none;
     box-shadow: none;

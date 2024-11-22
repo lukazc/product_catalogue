@@ -5,11 +5,11 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 import { Product } from '../../models/product.model';
 import { Observable } from 'rxjs';
 import { FilterParams } from '../../models/filter-params.model';
-import { SortComponent } from '../sort/sort.component';
+import { FiltersComponent } from '../filters/filters.component';
 
 @Component({
     selector: 'app-product-catalog',
-    imports: [CommonModule, ProductCardComponent, SortComponent],
+    imports: [CommonModule, ProductCardComponent, FiltersComponent],
     templateUrl: './product-catalog.component.html',
     styleUrls: ['./product-catalog.component.scss']
 })
@@ -32,5 +32,9 @@ export class ProductCatalogComponent implements OnInit {
 
     onFilterChange(filterParams: any): void {
         this.productStateService.loadFilteredProducts(filterParams);
+    }
+
+    openFiltersDialog(): void {
+     
     }
 }

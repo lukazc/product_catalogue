@@ -4,7 +4,7 @@ import { Product, ProductApiResponse } from '../models/product.model';
 import { FilterParams } from '../models/filter-params.model';
 import { ProductService } from '../services/product.service';
 
-const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 0 };
+const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20 };
 
 @Injectable({
     providedIn: 'root'
