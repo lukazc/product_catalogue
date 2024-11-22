@@ -14,9 +14,11 @@ import { Observable } from 'rxjs';
 })
 export class ProductCatalogComponent implements OnInit {
     products$: Observable<Product[]>;
+    isLoading$: Observable<boolean>;
 
     constructor(private productStateService: ProductStateService) {
         this.products$ = this.productStateService.products$;
+        this.isLoading$ = this.productStateService.isLoading$;
     }
 
     ngOnInit() {
