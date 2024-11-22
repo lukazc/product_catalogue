@@ -1,7 +1,8 @@
 <div class="catalog-header">
     {{ (categoryName$ | async) || 'All products' }}
 </div>
-<button id="filtersDialogButton" (click)="openFiltersDialog()">Filters</button>
+<button mat-button class="filtersDialogButton" (click)="openFiltersDialog()">Filters</button>
+<button *ngIf="!(isLoading$ | async) && !(products$ | async)?.length" mat-button class="filtersDialogButton" (click)="clearFilters()">Clear filters</button>
 <div class="catalog-container">
     <app-filters></app-filters>
     <div class="responsive-grid">
@@ -16,7 +17,9 @@
                     <app-product-card (click)="openProductDetailsModal(product)" *ngFor="let product of products$ | async" [product]="product"></app-product-card>
                 </ng-container>
                 <ng-template #noProductsTemplate>
-                    <div class="no-products-message">0 products found.</div>
+                    <div class="no-products-message">
+                        0 products found.
+                    </div>
                 </ng-template>
             </ng-container>
         </ng-template>

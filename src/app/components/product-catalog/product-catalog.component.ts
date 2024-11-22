@@ -11,10 +11,11 @@ import { FiltersComponent } from '../filters/filters.component';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { ProductDetailModalComponent } from '../product-detail-modal/product-detail-modal.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-product-catalog',
-    imports: [CommonModule, ProductCardComponent, FiltersComponent, PaginationComponent],
+    imports: [CommonModule, ProductCardComponent, FiltersComponent, PaginationComponent, MatButton],
     templateUrl: './product-catalog.component.html',
     styleUrls: ['./product-catalog.component.scss']
 })
@@ -56,11 +57,15 @@ export class ProductCatalogComponent implements OnInit {
         });
     }
 
+    clearFilters(): void {
+        this.productStateService.clearFilterParams();
+    }
+
     openProductDetailsModal(product: Product): void {
         this.dialog.open(ProductDetailModalComponent, {
             data: { productId: product.id },
             width: '80%',
-            height: '50%',
+            height: '90%',
             panelClass: 'product-detail-modal'
         });
     }
