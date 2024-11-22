@@ -49,19 +49,40 @@ export class ProductStateService {
 
     private isResettingFilters = false;
 
+    private allProducts: ProductApiResponse | undefined;
+
     constructor(private productService: ProductService) {
         this.loadCategories();
     }
 
     loadProducts(): void {
         this.isLoadingSubject.next(true);
-        const params = { ...this.filterParamsSubject.value, limit: this.filterParamsSubject.value.limit, skip: (this.currentPageSubject.value - 1) * (this.filterParamsSubject.value.limit || 20) };
-        this.loadFilteredProducts(params).subscribe();
+        const params = { ...this.filterParamsSubject.value, skip: (this.currentPageSubject.value - 1) * (this.filterParamsSubject.value.limit || 20) };
+        
+        const priceRangeIsSet: boolean = params.priceMin !== undefined && params.priceMax !== undefined;
+        const categoryAndSearchAreBothSet: boolean = params.category !== undefined && params.q !== undefined;
+        if (priceRangeIsSet || categoryAndSearchAreBothSet) {
+            this.loadAllProducts().subscribe();
+        } else {
+            this.loadFilteredProducts(params).subscribe();
+        }
     }
 
     loadAllProducts(): Observable<ProductApiResponse> {
+        if (this.allProducts) {
+            const filteredProducts = this.productService.filterProducts(this.allProducts.products, this.filterParamsSubject.value);
+            this.setProducts(filteredProducts);
+            this.totalItemsSubject.next(filteredProducts.length);
+            return new Observable<ProductApiResponse>();
+        }
+
         return this.productService.getAllProducts().pipe(
-            tap(response => this.setProducts(response.products))
+            tap(response => {
+                this.allProducts = response;
+                const filteredProducts = this.productService.filterProducts(response.products, this.filterParamsSubject.value);
+                this.setProducts(filteredProducts);
+                this.totalItemsSubject.next(response.total);
+            })
         );
     }
 
@@ -91,7 +112,7 @@ export class ProductStateService {
 
     setFilterParams(params: FilterParams) {
         if (this.isResettingFilters) return;
-        this.filterParamsSubject.next(Object.assign({}, DEFAULT_FILTER_PARAMS, params));
+        this.filterParamsSubject.next(Object.assign({}, DEFAULT_FILTER_PARAMS, this.filterParamsSubject.value, params));
         this.currentPageSubject.next(1);
         this.loadProducts();
     }
@@ -100,6 +121,14 @@ export class ProductStateService {
         this.pauseFilters();
         this.filterParamsSubject.next(DEFAULT_FILTER_PARAMS);
         this.resetFiltersSubject.next();
+        this.loadProducts();
+    }
+
+    setPriceRangeFilter(min: number, max: number) {
+        if (this.isResettingFilters) return;
+        const currentParams = this.filterParamsSubject.value;
+        this.filterParamsSubject.next({ ...currentParams, priceMin: min, priceMax: max, skip: 0 });
+        this.currentPageSubject.next(1);
         this.loadProducts();
     }
 
@@ -113,7 +142,8 @@ export class ProductStateService {
     setSearchFilter(searchTerm: string) {
         if (this.isResettingFilters) return;
         const currentParams = this.filterParamsSubject.value;
-        this.setFilterParams({ ...currentParams, q: searchTerm, category: undefined });
+        this.filterParamsSubject.next(Object.assign({}, DEFAULT_FILTER_PARAMS, currentParams, { q: searchTerm }));
+        this.currentPageSubject.next(1);
         this.loadProducts();
     }
 
