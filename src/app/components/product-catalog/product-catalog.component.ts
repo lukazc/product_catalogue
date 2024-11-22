@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { FilterParams } from '../../models/filter-params.model';
 import { Product } from '../../models/product.model';
 import { ProductStateService } from '../../state/product-state.service';
@@ -28,7 +28,9 @@ export class ProductCatalogComponent implements OnInit {
     pageSize$: Observable<number | undefined>;
 
     constructor(private productStateService: ProductStateService, private dialog: MatDialog) {
-        this.products$ = this.productStateService.products$;
+        this.products$ = this.productStateService.products$.pipe(tap(products => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }));
         this.filterParams$ = this.productStateService.filterParams$;
         this.categoryName$ = this.productStateService.categoryName$;
         this.isLoading$ = this.productStateService.isLoading$;
