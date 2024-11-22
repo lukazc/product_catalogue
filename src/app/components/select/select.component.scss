@@ -1,4 +1,4 @@
-.sort-select-container {
+.select-container {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -8,7 +8,7 @@
     cursor: pointer;
 }
 
-.sort-select-container select {
+.select-container select {
     width: 100%;
     padding: 10px 40px 10px 10px;
     border: none;
@@ -20,11 +20,11 @@
     cursor: pointer;
 }
 
-.sort-select-container select:focus {
+.select-container select:focus {
     outline: none;
 }
 
-.sort-select-container .mat-icon {
+.select-container .mat-icon {
     font-size: 22px;
     color: #aaa;
 }

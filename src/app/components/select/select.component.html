@@ -1,0 +1,7 @@
+<div class="select-container">
+    <select #select (change)="onSelectionChange($event)">
+        <option value="">{{ placeholder }}</option>
+        <option *ngFor="let option of options" [value]="option.value">{{ option.label }}</option>
+    </select>
+    <mat-icon (click)="select.showPicker()" class="dropdown-icon">arrow_drop_down</mat-icon>
+</div>
