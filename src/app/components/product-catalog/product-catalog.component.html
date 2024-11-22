@@ -12,16 +12,17 @@
         </ng-container>
         <ng-template #productGridTemplate>
             <ng-container *ngIf="products$ | async as products">
-            <ng-container *ngIf="products.length; else noProductsTemplate">
-                <app-product-card *ngFor="let product of products$ | async" [product]="product"></app-product-card>
-            </ng-container>
-            <ng-template #noProductsTemplate>
-                <div class="no-products-message">0 products found.</div>
-            </ng-template>
+                <ng-container *ngIf="products.length; else noProductsTemplate">
+                    <app-product-card *ngFor="let product of products$ | async" [product]="product"></app-product-card>
+                </ng-container>
+                <ng-template #noProductsTemplate>
+                    <div class="no-products-message">0 products found.</div>
+                </ng-template>
             </ng-container>
         </ng-template>
     </div>
 </div>
+<app-pagination *ngIf="(products$ | async)?.length" [totalItems]="(totalItems$ | async) || 0" [pageSize]="(pageSize$ | async) || 0" [currentPage]="(currentPage$ | async) || 1" (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)"></app-pagination>
 
 <ng-template #filtersDialog>
     <app-filters></app-filters>

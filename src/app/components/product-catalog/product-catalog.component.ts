@@ -2,16 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { FilterParams } from '../../models/filter-params.model';
 import { Product } from '../../models/product.model';
 import { ProductStateService } from '../../state/product-state.service';
 import { FiltersDialogComponent } from '../filters-dialog/filters-dialog.component';
 import { FiltersComponent } from '../filters/filters.component';
 import { ProductCardComponent } from '../product-card/product-card.component';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
     selector: 'app-product-catalog',
-    imports: [CommonModule, ProductCardComponent, FiltersComponent],
+    imports: [CommonModule, ProductCardComponent, FiltersComponent, PaginationComponent],
     templateUrl: './product-catalog.component.html',
     styleUrls: ['./product-catalog.component.scss']
 })
@@ -20,12 +22,18 @@ export class ProductCatalogComponent implements OnInit {
     filterParams$: Observable<FilterParams>;
     categoryName$: Observable<string | undefined>;
     isLoading$: Observable<boolean>;
+    totalItems$: Observable<number>;
+    currentPage$: Observable<number>;
+    pageSize$: Observable<number | undefined>;
 
     constructor(private productStateService: ProductStateService, private dialog: MatDialog) {
         this.products$ = this.productStateService.products$;
         this.filterParams$ = this.productStateService.filterParams$;
         this.categoryName$ = this.productStateService.categoryName$;
         this.isLoading$ = this.productStateService.isLoading$;
+        this.totalItems$ = this.productStateService.totalItems$;
+        this.currentPage$ = this.productStateService.currentPage$;
+        this.pageSize$ = this.productStateService.filterParams$.pipe(map(params => params.limit));
     }
 
     ngOnInit() {
@@ -43,5 +51,13 @@ export class ProductCatalogComponent implements OnInit {
             position: { bottom: '0' },
             panelClass: 'filters-dialog'
         });
+    }
+
+    onPageChange(page: number) {
+        this.productStateService.setPage(page);
+    }
+
+    onPageSizeChange(size: number) {
+        this.productStateService.setPageSize(size);
     }
 }

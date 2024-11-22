@@ -33,7 +33,14 @@ export class ProductService {
    * @returns An Observable of filtered products.
    */
   getFilteredProducts(params: FilterParams = {}): Observable<ProductApiResponse> {
-    const endpoint = params.q ? 'products/search' : 'products';
+    let endpoint = 'products';
+    if (params.q) {
+        endpoint = 'products/search';
+    }
+    if (params.category) {
+        endpoint = `products/category/${params.category}`;
+    }
+
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
       const value = params[key as keyof FilterParams];
@@ -52,8 +59,8 @@ export class ProductService {
    * @param params - The filtering parameters.
    * @returns The filtered products.
    */
-  private filterProducts(products: Product[], params: FilterParams): Product[] {
-    return products.filter(product => {
+  public filterProducts(products: Product[], params: FilterParams): Product[] {
+    let filteredProducts = products.filter(product => {
       let matches = true;
 
       if (params.category && product.category !== params.category) {
@@ -65,27 +72,35 @@ export class ProductService {
       if (params.priceMax !== undefined && product.price > params.priceMax) {
         matches = false;
       }
-      if (params.q && !product.title.toLowerCase().includes(params.q.toLowerCase())) {
+      if (params.q && (!product.title.toLowerCase().includes(params.q.toLowerCase()) || !product.description.toLowerCase().includes(params.q.toLowerCase()))) {
         matches = false;
       }
 
       return matches;
-    }).sort((a, b) => {
-        if (params.sortBy) {
-            const order = params.order === 'desc' ? -1 : 1;
-            const aVal = a[params.sortBy];
-            const bVal = b[params.sortBy];
-            if(aVal === undefined || bVal === undefined) {
-                return 0;
-            }
-            if (aVal < bVal) {
-              return -1 * order;
-            }
-            if (aVal > bVal) {
-              return 1 * order;
-            }
-          }
+    });
+
+    if (params.sortBy !== undefined) {
+      const order = params.order === 'desc' ? -1 : 1;
+      filteredProducts = filteredProducts.sort((a, b) => {
+        // @ts-ignore
+        const aVal = a[params.sortBy];
+        // @ts-ignore
+        const bVal = b[params.sortBy];
+        if (aVal === undefined || bVal === undefined) {
           return 0;
-    }).slice(params.skip || 0, (params.skip || 0) + (params.limit || products.length));
+        }
+        if (aVal < bVal) {
+          return -1 * order;
+        }
+        if (aVal > bVal) {
+          return 1 * order;
+        }
+        return 0;
+      });
+    }
+
+    const skip = params.skip || 0;
+    const limit = params.limit || filteredProducts.length;
+    return filteredProducts.slice(skip, skip + limit);
   }
 }
