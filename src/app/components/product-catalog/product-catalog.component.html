@@ -1,5 +1,5 @@
 <div class="catalog-header">
-    {{ (categoryFilter$ | async) || 'All products' }}
+    {{ (categoryName$ | async) || 'All products' }}
 </div>
 <button id="filtersDialogButton" (click)="openFiltersDialog()">Filters</button>
 <div class="catalog-container">

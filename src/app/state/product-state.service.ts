@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap, combineLatest } from 'rxjs';
 import { Product, ProductApiResponse } from '../models/product.model';
 import { FilterParams } from '../models/filter-params.model';
 import { ProductService } from '../services/product.service';
+import { Category } from '../models/category.model';
 
 const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20 };
 
@@ -19,11 +20,19 @@ export class ProductStateService {
     private filterParamsSubject = new BehaviorSubject<FilterParams>(DEFAULT_FILTER_PARAMS);
     public filterParams$ = this.filterParamsSubject.asObservable();
 
-    public categoryFilter$: Observable<string | undefined> = this.filterParams$.pipe(
-        map(params => params.category)
-    );
+    private productCategoriesSubject = new BehaviorSubject<Category[]>([]);
+    public productCategories$ = this.productCategoriesSubject.asObservable();
 
-    constructor(private productService: ProductService) { }
+    public categoryName$: Observable<string | undefined> = combineLatest([
+        this.productCategories$,
+        this.filterParams$
+    ]).pipe(
+        map(([categories, filterParams]) => categories.find(category => category.slug === filterParams.category)?.name)
+    );
+    
+    constructor(private productService: ProductService) {
+        this.loadCategories();
+    }
 
     loadProducts(): void {
         this.isLoadingSubject.next(true);
@@ -46,6 +55,12 @@ export class ProductStateService {
         );
     }
 
+    loadCategories(): void {
+        this.productService.getCategories().subscribe(categories => {
+            this.productCategoriesSubject.next(categories);
+        });
+    }
+
     setProducts(products: Product[]) {
         this.productsSubject.next(products);
         this.isLoadingSubject.next(false);
@@ -57,6 +72,7 @@ export class ProductStateService {
 
     setFilterParams(params: FilterParams) {
         this.filterParamsSubject.next(params);
+        this.loadProducts();
     }
 
     clearFilterParams() {

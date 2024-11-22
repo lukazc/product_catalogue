@@ -3,6 +3,9 @@ import { Component } from '@angular/core';
 import { PriceFilterComponent } from '../price-filter/price-filter.component';
 import { SelectComponent, SelectOption } from '../select/select.component';
 import { ProductStateService } from '../../state/product-state.service';
+import { Category } from '../../models/category.model';
+import { map, Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 
 type SortValue = 'price_asc' | 'price_desc' | 'title_asc' | 'title_desc';
@@ -20,16 +23,18 @@ const SORT_OPTIONS: SelectOption[] = [
     styleUrl: './filters.component.scss',
     imports: [
         PriceFilterComponent,
-        SelectComponent
+        SelectComponent,
+        CommonModule
     ]
 })
 export class FiltersComponent {
     sortOptions = SORT_OPTIONS;
-    categoryOptions: SelectOption[] = [
-        { value: 'electronics', label: 'Electronics' },
-        { value: 'books', label: 'Books' },
-        { value: 'clothing', label: 'Clothing' }
-    ];
+
+    get categoryOptions(): Observable<SelectOption[]> {
+        return this.productStateService.productCategories$.pipe(
+            map(categories => categories.map(category => ({ value: category.slug, label: category.name })))
+        )
+    }
 
     constructor(private productStateService: ProductStateService) {}
 
@@ -55,5 +60,7 @@ export class FiltersComponent {
         }
     }
 
-    onCategoryChange(value: string): void {}
+    onCategoryChange(value: string): void {
+        this.productStateService.setFilterParams({ category: value });
+    }
 }
