@@ -1,12 +1,10 @@
-
 import { Component } from '@angular/core';
 import { PriceFilterComponent } from '../price-filter/price-filter.component';
 import { SelectComponent, SelectOption } from '../select/select.component';
 import { ProductStateService } from '../../state/product-state.service';
-import { Category } from '../../models/category.model';
 import { map, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { MatDivider } from '@angular/material/divider';
+import { MatButton } from '@angular/material/button';
 
 
 type SortValue = 'price_asc' | 'price_desc' | 'title_asc' | 'title_desc';
@@ -26,7 +24,7 @@ const SORT_OPTIONS: SelectOption[] = [
         PriceFilterComponent,
         SelectComponent,
         CommonModule,
-        MatDivider
+        MatButton
     ]
 })
 export class FiltersComponent {
@@ -38,7 +36,11 @@ export class FiltersComponent {
         )
     }
 
-    constructor(private productStateService: ProductStateService) {}
+    areFiltersActive$: Observable<boolean>;
+
+    constructor(private productStateService: ProductStateService) {
+        this.areFiltersActive$ = this.productStateService.areFiltersActive$;
+    }
 
     onSortChange(value: string): void {
         const sortBy: SortValue = value as SortValue;
@@ -64,5 +66,9 @@ export class FiltersComponent {
 
     onCategoryChange(value: string): void {
         this.productStateService.setFilterParams({ category: value });
+    }
+
+    clearFilters(): void {
+        this.productStateService.clearFilterParams();
     }
 }

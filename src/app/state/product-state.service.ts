@@ -29,6 +29,10 @@ export class ProductStateService {
     ]).pipe(
         map(([categories, filterParams]) => categories.find(category => category.slug === filterParams.category)?.name)
     );
+
+    public areFiltersActive$: Observable<boolean> = this.filterParams$.pipe(
+        map(params => JSON.stringify(params) !== JSON.stringify(DEFAULT_FILTER_PARAMS))
+    );
     
     constructor(private productService: ProductService) {
         this.loadCategories();
@@ -76,7 +80,8 @@ export class ProductStateService {
     }
 
     clearFilterParams() {
-        this.filterParamsSubject.next({});
+        this.filterParamsSubject.next(DEFAULT_FILTER_PARAMS);
+        this.loadProducts();
     }
 
     setSearchFilter(searchTerm: string) {
