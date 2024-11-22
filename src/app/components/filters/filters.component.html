@@ -1,0 +1,7 @@
+<app-select [options]="sortOptions" placeholder="Sort by" (selectionChange)="onSortChange($event)"></app-select>
+<div class="divider"></div>
+<app-select [options]="(categoryOptions | async) || []" placeholder="Category" (selectionChange)="onCategoryChange($event)"></app-select>
+<div class="divider"></div>
+<app-price-filter></app-price-filter>
+<div class="divider"></div>
+<button *ngIf="areFiltersActive$ | async" mat-button (click)="clearFilters()">Clear Filters</button>

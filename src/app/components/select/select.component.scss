@@ -1,0 +1,31 @@
+.select-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    position: relative;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.select-container select {
+    width: 100%;
+    padding: 10px 40px 10px 10px;
+    border: none;
+    box-shadow: none;
+    font-size: 16px;
+    appearance: none;
+    background: none;
+    position: relative;
+    cursor: pointer;
+    color: var(--gray-700);
+}
+
+.select-container select:focus {
+    outline: 2px solid rgb(186, 0, 92);
+}
+
+.select-container .mat-icon {
+    font-size: 22px;
+    color: rgb(190, 190, 190);
+}

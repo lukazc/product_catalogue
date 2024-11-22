@@ -1,14 +1,28 @@
 <div class="catalog-header">
-    {{ (categoryFilter$ | async) || 'All products' }}
+    {{ (categoryName$ | async) || 'All products' }}
 </div>
-<app-sort></app-sort>
-<div class="responsive-grid">
-    <ng-container *ngIf="isLoading$ | async; else productGridTemplate">
-        <div class="placeholder" *ngFor="let n of [].constructor(20); let i = index"></div>
-    </ng-container>
-    <ng-template #productGridTemplate>
-        <div *ngFor="let product of products$ | async">
-            <app-product-card [product]="product"></app-product-card>
-        </div>
-    </ng-template>
+<button id="filtersDialogButton" (click)="openFiltersDialog()">Filters</button>
+<div class="catalog-container">
+    <app-filters></app-filters>
+    <div class="responsive-grid">
+        <ng-container *ngIf="isLoading$ | async; else productGridTemplate">
+            <div *ngFor="let n of [].constructor(20)" class="placeholder-container">
+                <div class="placeholder"></div>
+            </div>
+        </ng-container>
+        <ng-template #productGridTemplate>
+            <ng-container *ngIf="products$ | async as products">
+            <ng-container *ngIf="products.length; else noProductsTemplate">
+                <app-product-card *ngFor="let product of products$ | async" [product]="product"></app-product-card>
+            </ng-container>
+            <ng-template #noProductsTemplate>
+                <div class="no-products-message">0 products found.</div>
+            </ng-template>
+            </ng-container>
+        </ng-template>
+    </div>
 </div>
+
+<ng-template #filtersDialog>
+    <app-filters></app-filters>
+</ng-template>

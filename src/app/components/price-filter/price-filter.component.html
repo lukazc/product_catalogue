@@ -1,1 +1,7 @@
-<p>price-filter works!</p>
+<form [formGroup]="priceForm">
+  <label for="priceRange">Price range</label>
+  <mat-slider id="priceRange" min="0" max="40000" step="10" thumbLabel tickInterval="100" discrete [displayWith]="formatLabel">
+    <input matSliderStartThumb formControlName="priceMin">
+    <input matSliderEndThumb formControlName="priceMax">
+  </mat-slider>
+</form>
