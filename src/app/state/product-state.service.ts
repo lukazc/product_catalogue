@@ -43,6 +43,18 @@ export class ProductStateService {
         map(params => params.q || '')
     );
 
+    public currentSortValue$: Observable<string> = this.filterParams$.pipe(
+        map(params => params.sortBy ? `${params.sortBy}_${params.order}` : '')
+    );
+
+    public currentPriceRange$: Observable<{ min: number, max: number } | undefined> = this.filterParams$.pipe(
+        map(params => params.priceMin && params.priceMax ? { min: params.priceMin, max: params.priceMax } : undefined)
+    );
+
+    public currentCategoryValue$: Observable<string | undefined> = this.filterParams$.pipe(
+        map(params => params.category)
+    );
+
     public areFiltersActive$: Observable<boolean> = this.filterParams$.pipe(
         map(params => JSON.stringify(params) !== JSON.stringify(DEFAULT_FILTER_PARAMS))
     );
@@ -151,7 +163,6 @@ export class ProductStateService {
         if (this.isResettingFilters) return;
         const currentParams = this.filterParamsSubject.value;
         this.setFilterParams({ ...currentParams, sortBy, order });
-        this.loadProducts();
     }
 
     clearSortFilter() {
@@ -160,7 +171,6 @@ export class ProductStateService {
         delete currentParams.sortBy;
         delete currentParams.order;
         this.setFilterParams(currentParams);
-        this.loadProducts();
     }
 
     setPage(page: number) {

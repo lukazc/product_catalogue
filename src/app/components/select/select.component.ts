@@ -16,6 +16,7 @@ export interface SelectOption {
     imports: [CommonModule, MatIcon]
 })
 export class SelectComponent implements OnDestroy {
+    @Input() selectedValue: string | null | undefined = '';
     @Input() options: SelectOption[] = [];
     @Input() placeholder: string = 'Select an option';
     @Output() selectionChange = new EventEmitter<string>();

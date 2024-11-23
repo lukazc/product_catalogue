@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
-import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, take } from 'rxjs/operators';
 import { ProductStateService } from '../../state/product-state.service';
 
 @Component({
@@ -12,6 +12,7 @@ import { ProductStateService } from '../../state/product-state.service';
     imports: [MatSliderModule, ReactiveFormsModule]
 })
 export class PriceFilterComponent implements OnInit, OnDestroy {
+    @Input() currentPriceRange$: Observable<{ min: number, max: number } | undefined> = new Observable(); 
     priceForm: FormGroup;
     private resetFiltersSubscription: Subscription;
 
@@ -27,6 +28,12 @@ export class PriceFilterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.currentPriceRange$.pipe(take(1)).subscribe(range => {
+            if (range) {
+                this.priceForm.setValue({ priceMin: range.min, priceMax: range.max }, { emitEvent: false });
+            }
+        });
+
         this.priceForm.valueChanges.pipe(
             debounceTime(300),
             distinctUntilChanged()
