@@ -8,10 +8,11 @@ import { map, Observable, Subscription } from 'rxjs';
 import { CartStateService } from '../../state/cart-state.service';
 import { ProductStateService } from '../../state/product-state.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-header',
-    imports: [MatToolbarModule, SearchBarComponent, CommonModule, MatBadge, MatIcon, MatRipple],
+    imports: [MatToolbarModule, SearchBarComponent, CommonModule, MatBadge, MatIcon, MatRipple, RouterLink],
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })

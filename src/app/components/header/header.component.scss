@@ -12,7 +12,7 @@ mat-toolbar {
     line-height: 100%;
     letter-spacing: -0.125rem;
     margin: 0;
-    margin-right: 16px;
+    margin-right: 24px;
 }
 
 .search-bar-container {
@@ -28,6 +28,8 @@ mat-toolbar {
 }
 
 .cart-button {
+    height: 42px;
+    width: 42px;
     position: relative;
     margin-left: 24px;
     padding: 10px;
@@ -75,5 +77,13 @@ mat-toolbar {
 
     .mobile-search-bar {
         display: flex;
+    }
+}
+
+.expander {
+    display: none;
+    @media screen and (max-width: 600px) {
+        display: block;
+        flex: 1;
     }
 }
