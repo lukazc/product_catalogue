@@ -38,18 +38,18 @@ export class CartStateService {
      * Adds one quantity of a product to the cart.
      * @param product - The product to add.
      */
-    addProduct(product: Product): void {
+    addProduct(product: Product | LocalCartItem): void {
         const cart = this.cartSubject.value;
         if (cart) {
             cart.totalQuantity += 1;
             cart.totalPrice += product.price;
 
-            const existingProduct = cart.products.find(p => p.productId === product.id);
+            const existingProduct = cart.products.find(p => p.id === product.id);
             if (existingProduct) {
                 existingProduct.quantity += 1;
             } else {
                 const cartItem: LocalCartItem = {
-                    productId: product.id,
+                    id: product.id,
                     title: product.title,
                     price: product.price,
                     thumbnail: product.thumbnail,
@@ -68,7 +68,7 @@ export class CartStateService {
     removeProductQuantity(productId: number): void {
         const cart = this.cartSubject.value;
         if (cart) {
-            const product = cart.products.find(p => p.productId === productId);
+            const product = cart.products.find(p => p.id === productId);
             if (product) {
                 if (product.quantity === 1) {
                     this.removeProduct(productId);
@@ -89,13 +89,13 @@ export class CartStateService {
     removeProduct(productId: number): void {
         const cart = this.cartSubject.value;
         if (cart) {
-            const product = cart.products.find(p => p.productId === productId);
+            const product = cart.products.find(p => p.id === productId);
             if (product) {
                 cart.totalQuantity -= product.quantity;
                 cart.totalPrice -= product.price * product.quantity;
                 cart.totalProducts -= 1;
                 
-                cart.products = cart.products.filter(p => p.productId !== productId);
+                cart.products = cart.products.filter(p => p.id !== productId);
                 this.updateCart(cart);
             }
         }

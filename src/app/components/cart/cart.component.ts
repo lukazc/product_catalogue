@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LocalCart } from '../../models/cart.model';
+import { LocalCart, LocalCartItem } from '../../models/cart.model';
 import { CartStateService } from '../../state/cart-state.service';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-cart',
     templateUrl: './cart.component.html',
     styleUrls: ['./cart.component.scss'],
-    imports: [CommonModule]
+    imports: [CommonModule, MatIcon, MatIconButton, MatButton]
 })
 export class CartComponent implements OnInit {
     cart$: Observable<LocalCart | null>;
@@ -21,6 +23,15 @@ export class CartComponent implements OnInit {
 
     ngOnInit(): void {
         // Initialization logic if needed
+    }
+
+    /**
+     * Adds one quantity of a product to the cart.
+     * @param productId - The ID of the product to add.
+     * 
+     */
+    addProductQuantity(product: LocalCartItem): void {
+        this.cartStateService.addProduct(product);
     }
 
     /**

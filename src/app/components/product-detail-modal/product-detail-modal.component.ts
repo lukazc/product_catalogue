@@ -40,7 +40,7 @@ export class ProductDetailModalComponent implements OnInit, OnDestroy {
                 this.subscriptions.add(
                     this.cartStateService.cart$.subscribe(cart => {
                         if (cart && this.product) {
-                            const cartItem = cart.products.find(p => p.productId === this.product?.id);
+                            const cartItem = cart.products.find(p => p.id === this.product?.id);
                             this.productQuantity = cartItem ? cartItem.quantity : 0;
                         }
                     })

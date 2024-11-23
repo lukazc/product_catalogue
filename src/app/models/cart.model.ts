@@ -7,7 +7,7 @@ export interface LocalCart {
 }
 
 export interface LocalCartItem {
-    productId: number;
+    id: number;
     quantity: number;
     title: string;
     price: number;

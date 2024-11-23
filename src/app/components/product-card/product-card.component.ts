@@ -30,7 +30,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.cartStateService.cart$.subscribe(cart => {
                 if (cart) {
-                    const cartItem = cart.products.find(p => p.productId === this.product.id);
+                    const cartItem = cart.products.find(p => p.id === this.product.id);
                     this.productQuantity = cartItem ? cartItem.quantity : 0;
                 }
             })
