@@ -41,6 +41,9 @@ export class CartStateService {
     addProduct(product: Product): void {
         const cart = this.cartSubject.value;
         if (cart) {
+            cart.totalQuantity += 1;
+            cart.totalPrice += product.price;
+
             const existingProduct = cart.products.find(p => p.productId === product.id);
             if (existingProduct) {
                 existingProduct.quantity += 1;
@@ -52,7 +55,7 @@ export class CartStateService {
                     thumbnail: product.thumbnail,
                     quantity: 1
                 };
-                cart.products.push({ ...cartItem, quantity: 1 });
+                cart.products.push(cartItem);
             }
             this.updateCart(cart);
         }
@@ -67,10 +70,12 @@ export class CartStateService {
         if (cart) {
             const product = cart.products.find(p => p.productId === productId);
             if (product) {
-                product.quantity -= 1;
-                if (product.quantity <= 0) {
+                if (product.quantity === 1) {
                     this.removeProduct(productId);
                 } else {
+                    product.quantity -= 1;
+                    cart.totalQuantity -= 1;
+                    cart.totalPrice -= product.price;
                     this.updateCart(cart);
                 }
             }
@@ -84,8 +89,15 @@ export class CartStateService {
     removeProduct(productId: number): void {
         const cart = this.cartSubject.value;
         if (cart) {
-            cart.products = cart.products.filter(p => p.productId !== productId);
-            this.updateCart(cart);
+            const product = cart.products.find(p => p.productId === productId);
+            if (product) {
+                cart.totalQuantity -= product.quantity;
+                cart.totalPrice -= product.price * product.quantity;
+                cart.totalProducts -= 1;
+                
+                cart.products = cart.products.filter(p => p.productId !== productId);
+                this.updateCart(cart);
+            }
         }
     }
 
