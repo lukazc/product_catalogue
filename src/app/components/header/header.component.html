@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-        <span class="app-title">Catalogue</span>
+        <span class="app-title" routerLink="/">Catalogue</span>
         <div class="search-bar-container desktop">
             <app-search-bar [searchTerm]="(currentSearchQuery$ | async) || ''" (search)="onSearch($event)"></app-search-bar>
         </div>
