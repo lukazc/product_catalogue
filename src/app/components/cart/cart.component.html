@@ -1,1 +1,13 @@
-<p>cart works!</p>
+<div *ngIf="cart$ | async as cart; else emptyCart">
+  <div *ngFor="let item of cart.products">
+    <div>{{ item.title }} - {{ item.quantity }} x {{ item.price | currency }}</div>
+    <button (click)="removeProductQuantity(item.productId)">-</button>
+    <button (click)="removeProduct(item.productId)">Remove</button>
+  </div>
+  <div>Total Quantity: {{ cart.totalQuantity }}</div>
+  <div>Total Price: {{ cart.totalPrice | currency }}</div>
+  <button (click)="clearCart()">Clear Cart</button>
+</div>
+<ng-template #emptyCart>
+  <p>Your cart is empty.</p>
+</ng-template>

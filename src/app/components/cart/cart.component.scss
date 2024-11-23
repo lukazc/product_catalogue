@@ -1,0 +1,14 @@
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.cart-item button {
+  margin-left: 8px;
+}
+
+.cart-summary {
+  margin-top: 16px;
+  font-weight: bold;
+}
