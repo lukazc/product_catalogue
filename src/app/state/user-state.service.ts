@@ -26,7 +26,7 @@ export class UserStateService {
 
     /**
      * Gets the current user ID.
-     * @returns The ID of the current user, or 0 if no user is set.
+     * @returns The ID of the current user, or 0 for anonymous user.
      */
     getUserId(): number {
         const user = this.userSubject.value;
