@@ -1,6 +1,5 @@
 <mat-dialog-content>
     <ng-container *ngIf="product; else loadingIndicator">
-        <h2>{{ product.title }}</h2>
         <div class="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item" *ngFor="let image of product.images; let i = index"
@@ -20,14 +19,17 @@
                 </div>
             </ng-container>
         </div>
+        <h2>{{ product.title }}</h2>
         <p>{{ product.description }}</p>
-        <p>Price: {{ product.price | currency }}</p>
     </ng-container>
     <ng-template #loadingIndicator>
         <div class="loading-indicator"></div>
     </ng-template>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-raised-button>Add to Cart</button>
-    <button mat-button (click)="close()">Close</button>
+    <p *ngIf="product" class="price">{{ product.price | currency }}</p>
+    <button mat-raised-button>
+        <mat-icon>shopping_cart</mat-icon>
+        Add to Cart
+    </button>
 </mat-dialog-actions>

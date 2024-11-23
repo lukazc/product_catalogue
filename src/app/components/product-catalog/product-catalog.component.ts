@@ -65,7 +65,7 @@ export class ProductCatalogComponent implements OnInit {
         this.dialog.open(ProductDetailModalComponent, {
             data: { productId: product.id },
             width: '80%',
-            height: '90%',
+            // height: '90%',
             panelClass: 'product-detail-modal'
         });
     }
