@@ -27,10 +27,10 @@ export class CartService {
      * @param userId - The ID of the user.
      * @returns An observable that completes when the cart is cleared.
      */
-    clearCart(userId: number): Observable<void> {
-        return new Observable<void>(observer => {
+    clearCart(userId: number): Observable<LocalCart> {
+        return new Observable<LocalCart>(observer => {
             localStorage.removeItem(this.getCartKey(userId));
-            observer.next();
+            observer.next(this.getNewCart(userId));
             observer.complete();
         });
     }
