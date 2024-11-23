@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { LocalCart, LocalCartItem } from '../models/cart.model';
 import { CartService } from '../services/cart.service';
 import { UserStateService } from './user-state.service';
+import { Product } from '../models/product.model';
 
 @Injectable({
     providedIn: 'root'
@@ -35,14 +36,21 @@ export class CartStateService {
      * Adds one quantity of a product to the cart.
      * @param product - The product to add.
      */
-    addProduct(product: LocalCartItem): void {
+    addProduct(product: Product): void {
         const cart = this.cartSubject.value;
         if (cart) {
-            const existingProduct = cart.products.find(p => p.productId === product.productId);
+            const existingProduct = cart.products.find(p => p.productId === product.id);
             if (existingProduct) {
                 existingProduct.quantity += 1;
             } else {
-                cart.products.push({ ...product, quantity: 1 });
+                const cartItem: LocalCartItem = {
+                    productId: product.id,
+                    title: product.title,
+                    price: product.price,
+                    thumbnail: product.thumbnail,
+                    quantity: 1
+                };
+                cart.products.push({ ...cartItem, quantity: 1 });
             }
             this.updateCart(cart);
         }
