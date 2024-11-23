@@ -21,6 +21,8 @@ mat-dialog-content {
 }
 
 mat-dialog-actions {
+    animation: fadeIn 1s forwards;
+
     p.price {
         margin-right: auto;
         font-weight: 500;
@@ -28,16 +30,9 @@ mat-dialog-actions {
     }
 }
 
-.loading-indicator {
+.placeholder {
     height: 600px;
-    background: linear-gradient(
-        135deg,
-        rgb(255, 255, 255, 0.5) 25%,
-        rgba(255, 248, 248, 0.5) 50%,
-        rgb(255, 255, 255, 0.5) 75%
-    );
-    background-size: 200% 200%;
-    animation: sheen 1.5s infinite;
+    animation: sheen 1s infinite linear;
 }
 
 .carousel {

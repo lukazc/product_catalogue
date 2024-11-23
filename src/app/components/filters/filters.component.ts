@@ -76,7 +76,7 @@ export class FiltersComponent {
     }
 
     onCategoryChange(value: string): void {
-        this.productStateService.setFilterParams({ category: value });
+        this.productStateService.setFilterParams({ category: value || undefined });
     }
 
     clearFilters(): void {

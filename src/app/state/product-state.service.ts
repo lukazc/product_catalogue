@@ -5,7 +5,7 @@ import { FilterParams } from '../models/filter-params.model';
 import { ProductService } from '../services/product.service';
 import { Category } from '../models/category.model';
 
-const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20 };
+const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20, select: 'id,title,description,price,thumbnail,images,category' };
 
 @Injectable({
     providedIn: 'root'

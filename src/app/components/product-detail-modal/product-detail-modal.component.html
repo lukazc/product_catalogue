@@ -23,12 +23,12 @@
         <p>{{ product.description }}</p>
     </ng-container>
     <ng-template #loadingIndicator>
-        <div class="loading-indicator"></div>
+        <div class="placeholder"></div>
     </ng-template>
 </mat-dialog-content>
 <mat-dialog-actions>
     <p *ngIf="product" class="price">{{ product.price | currency }}</p>
-    <button mat-raised-button>
+    <button mat-raised-button (click)="addProductToCart()" [matBadge]="productQuantity || null" matBadgeOverlap="true">
         <mat-icon>shopping_cart</mat-icon>
         Add to Cart
     </button>

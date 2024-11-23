@@ -8,7 +8,7 @@ mat-card {
     height: 450px;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
     border-radius: 0;
     box-shadow: none;
     transition:
@@ -41,10 +41,11 @@ mat-card-subtitle {
 }
 
 mat-card-title {
+    margin-top: 8px;
     font-size: 20px;
     line-height: 20px;
-    font-weight: 500;
-    color: var(--gray-700);
+    font-weight: 400;
+    color: var(--gray-900);
 }
 mat-card-subtitle {
     font-size: 16px;

@@ -5,7 +5,7 @@ export interface FilterParams {
     order?: 'asc' | 'desc';
     limit?: number;
     skip?: number;
-    select?: keyof Product;
+    select?: string;
     q?: string;
     category?: string;
     priceMin?: number;
