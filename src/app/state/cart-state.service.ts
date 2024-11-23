@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { LocalCart, LocalCartItem } from '../models/cart.model';
 import { CartService } from '../services/cart.service';
 import { UserStateService } from './user-state.service';
@@ -11,6 +11,8 @@ import { Product } from '../models/product.model';
 export class CartStateService {
     private cartSubject: BehaviorSubject<LocalCart | null> = new BehaviorSubject<LocalCart | null>(null);
     public cart$: Observable<LocalCart | null> = this.cartSubject.asObservable();
+
+    public totalQuantity$: Observable<number> = this.cart$.pipe(map(cart => cart?.totalQuantity || 0));
 
     constructor(
         private cartService: CartService,

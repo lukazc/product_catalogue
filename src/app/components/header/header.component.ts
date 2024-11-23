@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatBadge } from '@angular/material/badge';
 import { MatRipple } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { CartStateService } from '../../state/cart-state.service';
 import { ProductStateService } from '../../state/product-state.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
@@ -24,12 +24,14 @@ export class HeaderComponent {
         private cartStateService: CartStateService
     ) {
         this.currentSearchQuery$ = this.productStateService.currentSearchQuery$;
-        this.totalProductsInCart$ = this.cartStateService.cart$.pipe(
-            map(cart => cart ? cart.products.reduce((total, item) => total + item.quantity, 0) : 0)
-        );
+        this.totalProductsInCart$ = this.cartStateService.totalQuantity$;
     }
 
-    onSearch(searchTerm: string) {
+    /**
+     * Handles the search event and sets the search filter.
+     * @param searchTerm - The search term to filter products.
+     */
+    onSearch(searchTerm: string): void {
         this.productStateService.setSearchFilter(searchTerm);
     }
 }
