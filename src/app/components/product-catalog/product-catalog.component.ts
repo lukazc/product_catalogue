@@ -12,6 +12,8 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { ProductDetailModalComponent } from '../product-detail-modal/product-detail-modal.component';
 import { MatButton } from '@angular/material/button';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-product-catalog',
@@ -28,7 +30,13 @@ export class ProductCatalogComponent implements OnInit {
     currentPage$: Observable<number>;
     pageSize$: Observable<number | undefined>;
 
-    constructor(private productStateService: ProductStateService, private dialog: MatDialog) {
+    constructor(
+        private productStateService: ProductStateService, 
+        private dialog: MatDialog,
+        private route: ActivatedRoute,
+        private router: Router,
+        private location: Location
+    ) {
         this.products$ = this.productStateService.products$.pipe(tap(products => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }));
@@ -42,6 +50,12 @@ export class ProductCatalogComponent implements OnInit {
 
     ngOnInit() {
         this.productStateService.loadProducts();
+        this.route.params.subscribe(params => {
+            const productId = params['productId'];
+            if (productId) {
+                this.openProductDetailsModal(productId);
+            }
+        });
     }
 
     onFilterChange(filterParams: any): void {
@@ -61,14 +75,20 @@ export class ProductCatalogComponent implements OnInit {
         this.productStateService.clearFilterParams();
     }
 
-    openProductDetailsModal(product: Product): void {
-        this.dialog.open(ProductDetailModalComponent, {
-            data: { productId: product.id },
-            width: '80%',
-            // height: '90%',
-            panelClass: 'product-detail-modal'
+    openProductDetailsModal(productId: number): void {
+        const dialog = this.dialog.open(ProductDetailModalComponent, {
+            data: { productId },
+            panelClass: 'product-detail-modal',
+            closeOnNavigation: true
         });
-    }
+        dialog.afterOpened().subscribe(() => {
+            this.location.replaceState(`/product/${productId}`);
+        });
+
+        dialog.afterClosed().subscribe(() => {
+            this.location.replaceState('/');
+        });
+    };
 
     onPageChange(page: number) {
         this.productStateService.setPage(page);
