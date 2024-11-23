@@ -28,7 +28,7 @@
 </mat-dialog-content>
 <mat-dialog-actions>
     <p *ngIf="product" class="price">{{ product.price | currency }}</p>
-    <button mat-raised-button>
+    <button mat-raised-button (click)="addProductToCart()" [matBadge]="productQuantity || null" matBadgeOverlap="true">
         <mat-icon>shopping_cart</mat-icon>
         Add to Cart
     </button>
