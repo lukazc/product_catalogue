@@ -11,4 +11,6 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class ProductCardComponent {
     @Input() product: any;
+
+    isImageLoaded: boolean = false;
 }
