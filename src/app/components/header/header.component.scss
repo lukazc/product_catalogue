@@ -27,6 +27,43 @@ mat-toolbar {
     }
 }
 
+.cart-button {
+    position: relative;
+    margin-left: 24px;
+    padding: 10px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgb(186, 0, 92, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+        font-size: 22px;
+        color: rgb(186, 0, 92);
+    }
+
+    &:hover {
+        background-color: rgb(186, 0, 92, 0.3);
+    }
+
+    &:focus {
+        outline: 1px solid rgb(186, 0, 92, 0.5);
+    }
+
+    .ripple-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+}
+
 .mobile-search-bar {
     display: none;
 }
