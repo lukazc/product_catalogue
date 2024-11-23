@@ -34,6 +34,18 @@ export class FiltersComponent {
 
     areFiltersActive$: Observable<boolean>;
 
+    get currentSortValue$(): Observable<string> {
+        return this.productStateService.currentSortValue$;
+    }
+
+    get currentCategoryValue$(): Observable<string | undefined> {
+        return this.productStateService.currentCategoryValue$;
+    }
+
+    get currentPriceRange$(): Observable<{ min: number, max: number } | undefined> {
+        return this.productStateService.currentPriceRange$;
+    }
+
     constructor(private productStateService: ProductStateService) {
         this.areFiltersActive$ = this.productStateService.areFiltersActive$;
         productStateService.productCategories$.pipe(take(2)).subscribe(categories => {

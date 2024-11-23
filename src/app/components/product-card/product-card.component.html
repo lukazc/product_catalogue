@@ -1,5 +1,5 @@
 <mat-card>
-    <img mat-card-image [src]="product.thumbnail" alt="{{ product.title }}">
+    <img [class.blur]="!isImageLoaded" (load)="isImageLoaded = true" mat-card-image [src]="product.thumbnail" alt="{{ product.title }}">
     <mat-card-subtitle>{{ product.price | currency }}</mat-card-subtitle>
     <mat-card-title>{{ product.title }}</mat-card-title>
     <mat-card-content>

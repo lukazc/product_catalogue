@@ -43,6 +43,18 @@ export class ProductStateService {
         map(params => params.q || '')
     );
 
+    public currentSortValue$: Observable<string> = this.filterParams$.pipe(
+        map(params => params.sortBy ? `${params.sortBy}_${params.order}` : '')
+    );
+
+    public currentPriceRange$: Observable<{ min: number, max: number } | undefined> = this.filterParams$.pipe(
+        map(params => params.priceMin && params.priceMax ? { min: params.priceMin, max: params.priceMax } : undefined)
+    );
+
+    public currentCategoryValue$: Observable<string | undefined> = this.filterParams$.pipe(
+        map(params => params.category)
+    );
+
     public areFiltersActive$: Observable<boolean> = this.filterParams$.pipe(
         map(params => JSON.stringify(params) !== JSON.stringify(DEFAULT_FILTER_PARAMS))
     );
@@ -62,26 +74,26 @@ export class ProductStateService {
         const priceRangeIsSet: boolean = params.priceMin !== undefined && params.priceMax !== undefined;
         const categoryAndSearchAreBothSet: boolean = params.category !== undefined && params.q !== undefined;
         if (priceRangeIsSet || categoryAndSearchAreBothSet) {
-            this.loadAllProducts().subscribe();
+            this.loadAllProducts(params).subscribe();
         } else {
             this.loadFilteredProducts(params).subscribe();
         }
     }
 
-    loadAllProducts(): Observable<ProductApiResponse> {
+    loadAllProducts(params: FilterParams): Observable<ProductApiResponse> {
         if (this.allProducts) {
-            const filteredProducts = this.productService.filterProducts(this.allProducts.products, this.filterParamsSubject.value);
-            this.setProducts(filteredProducts);
-            this.totalItemsSubject.next(filteredProducts.length);
+            const response = this.productService.filterProducts(this.allProducts.products, params);
+            this.setProducts(response.products);
+            this.totalItemsSubject.next(response.total);
             return new Observable<ProductApiResponse>();
         }
 
         return this.productService.getAllProducts().pipe(
             tap(response => {
                 this.allProducts = response;
-                const filteredProducts = this.productService.filterProducts(response.products, this.filterParamsSubject.value);
-                this.setProducts(filteredProducts);
-                this.totalItemsSubject.next(response.total);
+                const filteredResponse = this.productService.filterProducts(response.products, params);
+                this.setProducts(filteredResponse.products);
+                this.totalItemsSubject.next(filteredResponse.total);
             })
         );
     }
@@ -151,7 +163,6 @@ export class ProductStateService {
         if (this.isResettingFilters) return;
         const currentParams = this.filterParamsSubject.value;
         this.setFilterParams({ ...currentParams, sortBy, order });
-        this.loadProducts();
     }
 
     clearSortFilter() {
@@ -160,7 +171,6 @@ export class ProductStateService {
         delete currentParams.sortBy;
         delete currentParams.order;
         this.setFilterParams(currentParams);
-        this.loadProducts();
     }
 
     setPage(page: number) {

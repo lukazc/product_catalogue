@@ -4,12 +4,13 @@ import { ProductStateService } from '../../state/product-state.service';
 import { Product } from '../../models/product.model';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-product-detail-modal',
   templateUrl: './product-detail-modal.component.html',
   styleUrl: './product-detail-modal.component.scss',
-  imports: [MatDialogModule, CommonModule, MatDialogModule, CurrencyPipe, MatButton]
+  imports: [MatDialogModule, CommonModule, MatDialogModule, CurrencyPipe, MatButton, MatIcon]
 })
 export class ProductDetailModalComponent implements OnInit {
   product: Product | null = null;

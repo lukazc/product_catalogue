@@ -59,7 +59,7 @@ export class ProductService {
    * @param params - The filtering parameters.
    * @returns The filtered products.
    */
-  public filterProducts(products: Product[], params: FilterParams): Product[] {
+  public filterProducts(products: Product[], params: FilterParams): ProductApiResponse {
     let filteredProducts = products.filter(product => {
       let matches = true;
 
@@ -101,6 +101,13 @@ export class ProductService {
 
     const skip = params.skip || 0;
     const limit = params.limit || filteredProducts.length;
-    return filteredProducts.slice(skip, skip + limit);
+    const paginatedProducts = filteredProducts.slice(skip, skip + limit);
+
+    return {
+        products: paginatedProducts,
+        total: filteredProducts.length,
+        limit,
+        skip
+    };
   }
 }
