@@ -19,3 +19,11 @@ export interface Cart {
     totalProducts: number;
     totalQuantity: number;
 }
+
+export interface LocalCart {
+    userId: number;
+    products: CartItem[];
+    totalPrice: number;
+    totalProducts: number;
+    totalQuantity: number;
+}
