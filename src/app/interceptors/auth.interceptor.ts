@@ -2,11 +2,18 @@ import { HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angul
 import { inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserStateService } from '../state/user-state.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
     const userStateService = inject(UserStateService);
+
+    const authEndpointPattern = /^\/api\/auth\//;
+    if (authEndpointPattern.test(req.url)) {
+        return next(req);
+    }
+
     return userStateService.user$.pipe(
+        take(1),
         switchMap(user => {
             if (user && user.accessToken) {
                 req = req.clone({
