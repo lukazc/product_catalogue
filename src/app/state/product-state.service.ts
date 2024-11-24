@@ -184,6 +184,7 @@ export class ProductStateService {
         if (this.isResettingFilters) return;
         const currentParams = this.filterParamsSubject.value;
         if (size === currentParams.limit) return;
+        DEFAULT_FILTER_PARAMS.limit = size;
         this.filterParamsSubject.next({ ...currentParams, limit: size });
         this.currentPageSubject.next(1);
         this.loadProducts();
