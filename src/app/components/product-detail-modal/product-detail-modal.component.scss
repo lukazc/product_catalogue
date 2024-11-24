@@ -66,10 +66,11 @@ mat-dialog-actions {
     max-width: 100%;
     display: block;
     object-fit: contain;
+
+    filter: blur(10px);
 }
 
 .carousel-item img.thumbnail {
-    filter: blur(10px);
     height: 400px;
     background: linear-gradient(
         135deg,
@@ -84,8 +85,9 @@ mat-dialog-actions {
 .carousel-item img.full {
     visibility: hidden;
     height: 0;
-
+    transition: filter 750ms;
     &.loaded {
+        filter: blur(0);
         visibility: visible;
         height: 400px;
     }
