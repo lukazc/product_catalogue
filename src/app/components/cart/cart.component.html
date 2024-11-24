@@ -1,56 +1,61 @@
 <div class="cart-header">
-    Your Cart
+    Your shopping cart
 </div>
-<div *ngIf="cart$ | async as cart; else emptyCart" class="cart-container">
-    <div class="cart-items">
-        <div class="cart-item" *ngFor="let item of cart.products; let i = index">
-            <div class="cart-item-headers">
-                <div class="index"><span>{{ i + 1 }}.</span></div>
-                <div></div>
-                <div class="price-header">Unit price</div>
-                <div class="amount-header">Quantity</div>
-                <div class="price-header">Total</div>
-            </div>
-            <div class="cart-item-details" data-product-id="90559">
-                <img [src]="item.thumbnail" alt="{{ item.title }}" class="cart-item-thumbnail">
-                <div class="cart-item-title">{{ item.title }}</div>
-                <div class="cart-item-price">{{ item.price | currency }}</div>
-                <div class="cart-item-quantity">
-                    <button mat-icon-button (click)="addProductQuantity(item)">
-                        <mat-icon>add</mat-icon>
-                    </button>
-                    <span>{{ item.quantity }}</span>
-                    <button mat-icon-button (click)="removeProductQuantity(item.id)">
-                        <mat-icon>remove</mat-icon>
-                    </button>
+<div *ngIf="cart$ | async as cart" class="cart-container">
+    <ng-container *ngIf="cart.totalQuantity; else emptyCart">
+        <div class="cart-items">
+            <div class="cart-item" *ngFor="let item of cart.products; let i = index">
+                <div class="cart-item-headers">
+                    <div class="index"><span>{{ i + 1 }}.</span></div>
+                    <div></div>
+                    <div class="price-header">Unit price</div>
+                    <div class="amount-header">Quantity</div>
+                    <div class="price-header">Total</div>
                 </div>
-                <div class="cart-item-total">
-                    <span>{{ item.quantity * item.price | currency }}</span>
-                </div>
-                <div class="cart-item-remove"><button mat-icon-button (click)="removeProduct(item.id)">
-                        <mat-icon>close</mat-icon>
-                    </button>
+                <div class="cart-item-details" data-product-id="90559">
+                    <img [src]="item.thumbnail" alt="{{ item.title }}" class="cart-item-thumbnail">
+                    <div class="cart-item-title">{{ item.title }}</div>
+                    <div class="cart-item-price">{{ item.price | currency }}</div>
+                    <div class="cart-item-quantity">
+                        <button mat-icon-button (click)="addProductQuantity(item)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <span>{{ item.quantity }}</span>
+                        <button mat-icon-button (click)="removeProductQuantity(item.id)">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                    </div>
+                    <div class="cart-item-total">
+                        <span>{{ item.quantity * item.price | currency }}</span>
+                    </div>
+                    <div class="cart-item-remove"><button mat-icon-button (click)="removeProduct(item.id)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="cart-summary-container">
-        <div class="cart-summary">
-            <div class="cart-summary-title">Cart summary</div>
-            <div class="cart-summary-total">
-                <span class="label">Total price including VAT:</span>
-                <div class="number">{{ cart.totalPrice | currency }}</div>
-            </div>
-            <div class="cart-summary-total">
-                <span class="label">Number of items:</span>
-                <div class="number">{{ cart.totalQuantity }}</div>
-            </div>
-            <div class="cart-summary-actions">
-                <button mat-flat-button class="button btn-type-1 checkout cart-proceed">Proceed to checkout</button>
+        <div class="cart-summary-container">
+            <div class="cart-summary">
+                <div class="cart-summary-title">Cart summary</div>
+                <div class="cart-summary-total">
+                    <span class="label">Total price including VAT:</span>
+                    <div class="number">{{ cart.totalPrice | currency }}</div>
+                </div>
+                <div class="cart-summary-total">
+                    <span class="label">Number of items:</span>
+                    <div class="number">{{ cart.totalQuantity }}</div>
+                </div>
+                <div class="cart-summary-actions">
+                    <button mat-flat-button [disabled]="">Proceed to checkout</button>
+                </div>
             </div>
         </div>
-    </div>
+    </ng-container>
 </div>
 <ng-template #emptyCart>
-    <p>Your cart is empty.</p>
+    <div class="empty-cart">
+        <p class="empty-cart-message">Your cart is empty.</p>
+        <button mat-flat-button routerLink="/">Resume shopping</button>
+    </div>
 </ng-template>
