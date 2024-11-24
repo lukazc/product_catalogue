@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProductStateService } from '../../state/product-state.service';
 
 @Component({
@@ -19,10 +18,7 @@ export class SearchBarComponent implements OnDestroy {
     private resetFiltersSubscription: Subscription;
 
     constructor(private productStateService: ProductStateService) {
-        this.searchSubject.pipe(
-            debounceTime(300),
-            distinctUntilChanged()
-        ).subscribe(searchTerm => {
+        this.searchSubject.subscribe(searchTerm => {
             this.search.emit(searchTerm);
         });
         this.resetFiltersSubscription = this.productStateService.resetFilters$.subscribe(() => {

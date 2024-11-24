@@ -1,4 +1,4 @@
 <div class="search-bar">
     <mat-icon class="mat-icon">search</mat-icon>
-    <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch()" placeholder="Search products">
+    <input type="text" [(ngModel)]="searchTerm" (keyup.enter)="onSearch()" placeholder="Search products">
 </div>
