@@ -35,7 +35,7 @@ export class HeaderComponent {
      */
     onSearch(searchTerm: string): void {
         if (this.router.url !== '/') {
-            this.productStateService.clearFilterParams(true);
+            this.productStateService.clearFilterParamsWithSearch(searchTerm);
             this.router.navigate(['/']);
         } else {
             this.productStateService.setSearchFilter(searchTerm);

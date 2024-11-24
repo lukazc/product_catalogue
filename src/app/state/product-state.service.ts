@@ -71,7 +71,7 @@ export class ProductStateService {
     loadProducts(): void {
         this.isLoadingSubject.next(true);
         const params = { ...this.filterParamsSubject.value, skip: (this.currentPageSubject.value - 1) * (this.filterParamsSubject.value.limit || 20) };
-        
+
         const priceRangeIsSet: boolean = params.priceMin !== undefined && params.priceMax !== undefined;
         const categoryAndSearchAreBothSet: boolean = params.category !== undefined && params.q !== undefined;
         if (priceRangeIsSet || categoryAndSearchAreBothSet) {
@@ -130,16 +130,17 @@ export class ProductStateService {
         this.loadProducts();
     }
 
-    clearFilterParams(keepSearch: boolean = false) {
+    clearFilterParams() {
         this.pauseFilters();
         this.resetFiltersSubject.next();
         this.currentPageSubject.next(1);
-        if (!keepSearch) {
-            this.filterParamsSubject.next(DEFAULT_FILTER_PARAMS);
-            this.loadProducts();
-        } else {
-            this.filterParamsSubject.next({ ...DEFAULT_FILTER_PARAMS, q: this.filterParamsSubject.value.q });
-        }
+        this.filterParamsSubject.next(DEFAULT_FILTER_PARAMS);
+        this.loadProducts();
+    }
+
+    clearFilterParamsWithSearch(query: string) {
+        this.currentPageSubject.next(1);
+        this.filterParamsSubject.next({ ...DEFAULT_FILTER_PARAMS, q: query || undefined });
     }
 
     setPriceRangeFilter(min: number, max: number) {
@@ -160,12 +161,11 @@ export class ProductStateService {
     setSearchFilter(searchTerm: string) {
         if (this.isResettingFilters) return;
         const currentParams = this.filterParamsSubject.value;
-        this.filterParamsSubject.next(Object.assign({}, DEFAULT_FILTER_PARAMS, currentParams, { q: searchTerm }));
-        this.currentPageSubject.next(1);
-        if (this.router.url === '/') {
+        const searchTermChanged = currentParams.q !== searchTerm;
+        this.filterParamsSubject.next(Object.assign({}, DEFAULT_FILTER_PARAMS, currentParams, { q: searchTerm || undefined }));
+        if (searchTermChanged) {
+            this.currentPageSubject.next(1);
             this.loadProducts();
-        } else {
-            this.router.navigate(['/']);
         }
     }
 
