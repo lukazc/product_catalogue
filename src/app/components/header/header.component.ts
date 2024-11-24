@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatBadge } from '@angular/material/badge';
 import { MatRipple } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { map, Observable, Subscription } from 'rxjs';
+import { Router, RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
 import { CartStateService } from '../../state/cart-state.service';
 import { ProductStateService } from '../../state/product-state.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
-import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-header',
@@ -22,7 +22,8 @@ export class HeaderComponent {
 
     constructor(
         private productStateService: ProductStateService,
-        private cartStateService: CartStateService
+        private cartStateService: CartStateService,
+        private router: Router
     ) {
         this.currentSearchQuery$ = this.productStateService.currentSearchQuery$;
         this.totalProductsInCart$ = this.cartStateService.totalQuantity$;
@@ -33,6 +34,16 @@ export class HeaderComponent {
      * @param searchTerm - The search term to filter products.
      */
     onSearch(searchTerm: string): void {
-        this.productStateService.setSearchFilter(searchTerm);
+        if (this.router.url !== '/') {
+            this.productStateService.clearFilterParams(true);
+            this.router.navigate(['/']);
+        } else {
+            this.productStateService.setSearchFilter(searchTerm);
+        }
+    }
+
+    onPressHome(): void {
+        this.productStateService.clearFilterParams();
+        this.router.navigate(['/']);
     }
 }

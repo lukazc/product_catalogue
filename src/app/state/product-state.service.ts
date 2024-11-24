@@ -4,6 +4,7 @@ import { Product, ProductApiResponse } from '../models/product.model';
 import { FilterParams } from '../models/filter-params.model';
 import { ProductService } from '../services/product.service';
 import { Category } from '../models/category.model';
+import { Router } from '@angular/router';
 
 const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20, select: 'id,title,description,price,thumbnail,images,category' };
 
@@ -63,7 +64,7 @@ export class ProductStateService {
 
     private allProducts: ProductApiResponse | undefined;
 
-    constructor(private productService: ProductService) {
+    constructor(private productService: ProductService, private router: Router) {
         this.loadCategories();
     }
 
@@ -129,12 +130,16 @@ export class ProductStateService {
         this.loadProducts();
     }
 
-    clearFilterParams() {
+    clearFilterParams(keepSearch: boolean = false) {
         this.pauseFilters();
         this.resetFiltersSubject.next();
-        this.filterParamsSubject.next(DEFAULT_FILTER_PARAMS);
         this.currentPageSubject.next(1);
-        this.loadProducts();
+        if (!keepSearch) {
+            this.filterParamsSubject.next(DEFAULT_FILTER_PARAMS);
+            this.loadProducts();
+        } else {
+            this.filterParamsSubject.next({ ...DEFAULT_FILTER_PARAMS, q: this.filterParamsSubject.value.q });
+        }
     }
 
     setPriceRangeFilter(min: number, max: number) {
@@ -157,7 +162,11 @@ export class ProductStateService {
         const currentParams = this.filterParamsSubject.value;
         this.filterParamsSubject.next(Object.assign({}, DEFAULT_FILTER_PARAMS, currentParams, { q: searchTerm }));
         this.currentPageSubject.next(1);
-        this.loadProducts();
+        if (this.router.url === '/') {
+            this.loadProducts();
+        } else {
+            this.router.navigate(['/']);
+        }
     }
 
     setSortFilter(sortBy: keyof Product, order: 'asc' | 'desc') {
