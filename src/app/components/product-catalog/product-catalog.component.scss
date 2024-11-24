@@ -31,9 +31,12 @@
     flex: 1;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-rows: 450px;
+
     gap: 6px;
     @media (max-width: 600px) {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-rows: 324px;
         gap: 4px;
     }
 }

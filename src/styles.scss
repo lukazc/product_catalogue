@@ -76,6 +76,10 @@ main {
     animation: sheen 2.5s infinite linear;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 @keyframes sheen {
     0% {
         background-position: 100% 0;
