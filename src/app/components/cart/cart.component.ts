@@ -5,12 +5,13 @@ import { LocalCart, LocalCartItem } from '../../models/cart.model';
 import { CartStateService } from '../../state/cart-state.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-cart',
     templateUrl: './cart.component.html',
     styleUrls: ['./cart.component.scss'],
-    imports: [CommonModule, MatIcon, MatIconButton, MatButton]
+    imports: [CommonModule, MatIcon, MatIconButton, MatButton, RouterLink]
 })
 export class CartComponent implements OnInit {
     cart$: Observable<LocalCart | null>;
