@@ -5,7 +5,7 @@
             <app-search-bar [searchTerm]="(currentSearchQuery$ | async) || ''" (search)="onSearch($event)"></app-search-bar>
         </div>
         <div class="expander"></div>
-        <button class="cart-button" [matBadge]="totalProductsInCart$ | async" matBadgeOverlap="true" routerLink="/cart">
+        <button class="cart-button" [matBadge]="(totalProductsInCart$ | async) || null" matBadgeOverlap="true" routerLink="/cart">
             <div class="ripple-container" matRipple></div>
             <mat-icon>shopping_cart</mat-icon>
         </button>
