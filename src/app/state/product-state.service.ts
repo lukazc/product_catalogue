@@ -133,6 +133,7 @@ export class ProductStateService {
         this.pauseFilters();
         this.resetFiltersSubject.next();
         this.filterParamsSubject.next(DEFAULT_FILTER_PARAMS);
+        this.currentPageSubject.next(1);
         this.loadProducts();
     }
 
