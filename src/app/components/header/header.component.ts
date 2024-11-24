@@ -9,16 +9,18 @@ import { Observable } from 'rxjs';
 import { CartStateService } from '../../state/cart-state.service';
 import { ProductStateService } from '../../state/product-state.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
     selector: 'app-header',
-    imports: [MatToolbarModule, SearchBarComponent, CommonModule, MatBadge, MatIcon, MatRipple, RouterLink],
+    imports: [MatToolbarModule, SearchBarComponent, CommonModule, MatBadge, MatIcon, MatRipple, RouterLink, LoginComponent],
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
     currentSearchQuery$: Observable<string>;
     totalProductsInCart$: Observable<number>;
+    showLoginForm: boolean = false;
 
     constructor(
         private productStateService: ProductStateService,
@@ -45,5 +47,9 @@ export class HeaderComponent {
     onPressHome(): void {
         this.productStateService.clearFilterParams();
         this.router.navigate(['/']);
+    }
+
+    toggleLoginForm(): void {
+        this.showLoginForm = !this.showLoginForm;
     }
 }
