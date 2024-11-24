@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user.model';
+import { UserService } from '../services/user.service';
 
 @Injectable({
     providedIn: 'root'
@@ -8,6 +9,8 @@ import { User } from '../models/user.model';
 export class UserStateService {
     private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
     public user$: Observable<User | null> = this.userSubject.asObservable();
+
+    constructor(private userService: UserService) {}
 
     /**
      * Sets the current user.
@@ -31,5 +34,23 @@ export class UserStateService {
     getUserId(): number {
         const user = this.userSubject.value;
         return user ? user.id : 0;
+    }
+
+    /**
+     * Logs in the user with the provided credentials.
+     * @param username - The username.
+     * @param password - The password.
+     */
+    login(username: string, password: string): void {
+        this.userService.login({ username, password }).subscribe(user => {
+            this.setUser(user);
+        });
+    }
+
+    /**
+     * Logs out the current user.
+     */
+    logout(): void {
+        this.clearUser();
     }
 }
