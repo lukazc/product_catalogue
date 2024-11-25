@@ -33,6 +33,7 @@ mat-toolbar {
     position: relative;
     margin-left: 24px;
     border-radius: 50%;
+
     border: 1px solid #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: rgb(186, 0, 92, 0.2);
@@ -87,7 +88,7 @@ mat-toolbar {
     }
 }
 
-.login-form-container {
+.user-form-container {
     position: absolute;
     top: 60px;
     right: 20px;

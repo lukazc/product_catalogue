@@ -1,0 +1,17 @@
+
+div {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: auto;
+
+    p {
+        margin-bottom: 10px;
+    }
+
+    button {
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+}

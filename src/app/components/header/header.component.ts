@@ -11,17 +11,19 @@ import { ProductStateService } from '../../state/product-state.service';
 import { UserStateService } from '../../state/user-state.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { LoginComponent } from '../login/login.component';
+import { LogoutComponent } from '../logout/logout.component';
 
 @Component({
     selector: 'app-header',
-    imports: [MatToolbarModule, SearchBarComponent, CommonModule, MatBadge, MatIcon, MatRipple, RouterLink, LoginComponent],
+    imports: [MatToolbarModule, SearchBarComponent, CommonModule, MatBadge, MatIcon, MatRipple, RouterLink, LoginComponent, LogoutComponent],
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
     currentSearchQuery$: Observable<string>;
     totalProductsInCart$: Observable<number>;
-    showLoginForm: boolean = false;
+    showUserForm: boolean = false;
+    isLoggedIn: boolean = false;
 
     constructor(
         private productStateService: ProductStateService,
@@ -32,8 +34,12 @@ export class HeaderComponent {
         this.currentSearchQuery$ = this.productStateService.currentSearchQuery$;
         this.totalProductsInCart$ = this.cartStateService.totalQuantity$;
 
+        this.userStateService.user$.subscribe(user => {
+            this.isLoggedIn = !!user;
+        });
+
         this.userStateService.loginSuccess.subscribe(() => {
-            this.showLoginForm = false;
+            this.showUserForm = false;
         });
     }
 
@@ -55,15 +61,15 @@ export class HeaderComponent {
         this.router.navigate(['/']);
     }
 
-    toggleLoginForm(): void {
-        this.showLoginForm = !this.showLoginForm;
+    toggleUserForm(): void {
+        this.showUserForm = !this.showUserForm;
     }
 
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent): void {
         const target = event.target as HTMLElement;
-        if (this.showLoginForm && !target.closest('.login-form-container') && !target.closest('.user-button')) {
-            this.showLoginForm = false;
+        if (this.showUserForm && !target.closest('.user-form-container') && !target.closest('.user-button')) {
+            this.showUserForm = false;
         }
     }
 }

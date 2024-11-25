@@ -9,7 +9,7 @@
             <div class="ripple-container" matRipple></div>
             <mat-icon>shopping_cart</mat-icon>
         </button>
-        <button class="user-button" (click)="toggleLoginForm()">
+        <button class="user-button" (click)="toggleUserForm()">
             <div class="ripple-container" matRipple></div>
             <mat-icon>account_circle</mat-icon>
         </button>
@@ -20,6 +20,7 @@
         </div>
     </mat-toolbar-row>
 </mat-toolbar>
-<div *ngIf="showLoginForm" class="login-form-container">
-    <app-login></app-login>
+<div *ngIf="showUserForm" class="user-form-container">
+    <app-login *ngIf="!isLoggedIn"></app-login>
+    <app-logout *ngIf="isLoggedIn"></app-logout>
 </div>
