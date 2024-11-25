@@ -25,3 +25,8 @@
     npm run compodoc
     ```
 2. Open your browser and navigate to `http://127.0.0.1:8080`.
+
+## Additional Documentation
+
+- [Security Measures](./SECURITY.md)
+- [Maintenance and Upgrades](./MAINTENANCE.md)
