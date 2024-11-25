@@ -5,7 +5,15 @@ import { catchError, switchMap, take, finalize, filter } from 'rxjs/operators';
 import { UserStateService } from '../state/user-state.service';
 import { UserService } from '../services/user.service';
 
+/**
+ * Flag to track if a token refresh is in progress.
+ * @type {boolean}
+ */
 let isRefreshing = false;
+/**
+ * Subject to notify subscribers when a token refresh is complete.
+ * @type {BehaviorSubject<string | null>}
+ */
 let refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
 /**

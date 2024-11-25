@@ -6,9 +6,22 @@ import { map, Observable, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 
-
+/**
+ * Represents available sort values.
+ * @typedef SortValue
+ * @property {string} price_asc - Sort by price ascending.
+ * @property {string} price_desc - Sort by price descending.
+ * @property {string} title_asc - Sort by title ascending.
+ * @property {string} title_desc - Sort by title descending.
+ */
 type SortValue = 'price_asc' | 'price_desc' | 'title_asc' | 'title_desc';
 
+/**
+ * Represents available sort options.
+ * @type {SelectOption[]}
+ * @property {string} value - The value of the option.
+ * @property {string} label - The label of the option.
+ */
 const SORT_OPTIONS: SelectOption[] = [
     { value: 'price_asc', label: 'Lowest price' },
     { value: 'price_desc', label: 'Highest price' },

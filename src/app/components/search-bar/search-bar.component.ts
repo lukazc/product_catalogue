@@ -26,6 +26,9 @@ export class SearchBarComponent implements OnDestroy {
         });
     }
 
+    /**
+     * Cleans up subscriptions when the component is destroyed.
+     */
     ngOnDestroy(): void {
         this.resetFiltersSubscription.unsubscribe();
     }

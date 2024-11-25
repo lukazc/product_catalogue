@@ -6,6 +6,9 @@ import { ProductService } from '../services/product.service';
 import { Category } from '../models/category.model';
 import { Router } from '@angular/router';
 
+/**
+ * The default filter parameters.
+ */
 const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20, select: 'id,title,description,price,thumbnail,images,category' };
 
 @Injectable({

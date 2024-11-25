@@ -4,6 +4,11 @@ import { MatIcon } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { ProductStateService } from '../../state/product-state.service';
 
+/**
+ * Represents a select option.
+ * @property value - The value of the option.
+ * @property label - The label of the option.
+ */
 export interface SelectOption {
     value: string;
     label: string;
@@ -33,6 +38,9 @@ export class SelectComponent implements OnDestroy {
         });
     }
 
+    /**
+     * Cleans up subscriptions when the component is destroyed.
+     */
     ngOnDestroy(): void {
         this.resetFiltersSubscription.unsubscribe();
     }
