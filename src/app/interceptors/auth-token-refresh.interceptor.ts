@@ -8,6 +8,9 @@ import { UserService } from '../services/user.service';
 let isRefreshing = false;
 let refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
+/**
+ * Interceptor to handle token refresh on 401 Unauthorized errors.
+ */
 export const authTokenRefreshInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
     const userStateService = inject(UserStateService);
     const userService = inject(UserService);
@@ -17,10 +20,12 @@ export const authTokenRefreshInterceptor: HttpInterceptorFn = (req: HttpRequest<
 
     return next(req).pipe(
         catchError((error: HttpErrorResponse) => {
+            // If the error is not 401 or is from the refresh endpoint, throw the error
             if (error.status !== 401 || isRefreshEndpoint) {
                 return throwError(() => error);
             }
 
+            // If a token refresh is already in progress, wait for it to complete
             if (isRefreshing) {
                 return refreshTokenSubject.pipe(
                     filter(token => token !== null),
@@ -33,6 +38,7 @@ export const authTokenRefreshInterceptor: HttpInterceptorFn = (req: HttpRequest<
                 isRefreshing = true;
                 refreshTokenSubject.next(null);
 
+                // Attempt to refresh the token
                 return userStateService.user$.pipe(
                     take(1),
                     switchMap(user => {
