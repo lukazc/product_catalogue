@@ -9,7 +9,8 @@ import { UserService } from '../services/user.service';
 export class UserStateService {
     private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(this.getUserFromLocalStorage());
     public user$: Observable<User | null> = this.userSubject.asObservable();
-    public loginSuccess: Subject<void> = new Subject<void>();
+    public loginSuccess$: Subject<void> = new Subject<void>();
+    public logoutSuccess$: Subject<void> = new Subject<void>();
 
     constructor(private userService: UserService) {
         this.user$.subscribe(user => this.saveUserToLocalStorage(user));
@@ -47,7 +48,7 @@ export class UserStateService {
     login(username: string, password: string): void {
         this.userService.login({ username, password }).subscribe(user => {
             this.setUser(user);
-            this.loginSuccess.next();
+            this.loginSuccess$.next();
         });
     }
 
@@ -56,6 +57,7 @@ export class UserStateService {
      */
     logout(): void {
         this.clearUser();
+        this.logoutSuccess$.next();
     }
 
     /**

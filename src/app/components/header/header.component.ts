@@ -38,7 +38,10 @@ export class HeaderComponent {
             this.isLoggedIn = !!user;
         });
 
-        this.userStateService.loginSuccess.subscribe(() => {
+        this.userStateService.loginSuccess$.subscribe(() => {
+            this.showUserForm = false;
+        });
+        this.userStateService.logoutSuccess$.subscribe(() => {
             this.showUserForm = false;
         });
     }
