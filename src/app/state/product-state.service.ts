@@ -4,6 +4,7 @@ import { Product, ProductApiResponse } from '../models/product.model';
 import { FilterParams } from '../models/filter-params.model';
 import { ProductService } from '../services/product.service';
 import { Category } from '../models/category.model';
+import { Router } from '@angular/router';
 
 const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20, select: 'id,title,description,price,thumbnail,images,category' };
 
@@ -63,14 +64,14 @@ export class ProductStateService {
 
     private allProducts: ProductApiResponse | undefined;
 
-    constructor(private productService: ProductService) {
+    constructor(private productService: ProductService, private router: Router) {
         this.loadCategories();
     }
 
     loadProducts(): void {
         this.isLoadingSubject.next(true);
         const params = { ...this.filterParamsSubject.value, skip: (this.currentPageSubject.value - 1) * (this.filterParamsSubject.value.limit || 20) };
-        
+
         const priceRangeIsSet: boolean = params.priceMin !== undefined && params.priceMax !== undefined;
         const categoryAndSearchAreBothSet: boolean = params.category !== undefined && params.q !== undefined;
         if (priceRangeIsSet || categoryAndSearchAreBothSet) {
@@ -132,9 +133,14 @@ export class ProductStateService {
     clearFilterParams() {
         this.pauseFilters();
         this.resetFiltersSubject.next();
-        this.filterParamsSubject.next(DEFAULT_FILTER_PARAMS);
         this.currentPageSubject.next(1);
+        this.filterParamsSubject.next(DEFAULT_FILTER_PARAMS);
         this.loadProducts();
+    }
+
+    clearFilterParamsWithSearch(query: string) {
+        this.currentPageSubject.next(1);
+        this.filterParamsSubject.next({ ...DEFAULT_FILTER_PARAMS, q: query || undefined });
     }
 
     setPriceRangeFilter(min: number, max: number) {
@@ -155,9 +161,12 @@ export class ProductStateService {
     setSearchFilter(searchTerm: string) {
         if (this.isResettingFilters) return;
         const currentParams = this.filterParamsSubject.value;
-        this.filterParamsSubject.next(Object.assign({}, DEFAULT_FILTER_PARAMS, currentParams, { q: searchTerm }));
-        this.currentPageSubject.next(1);
-        this.loadProducts();
+        const searchTermChanged = currentParams.q !== searchTerm;
+        this.filterParamsSubject.next(Object.assign({}, DEFAULT_FILTER_PARAMS, currentParams, { q: searchTerm || undefined }));
+        if (searchTermChanged) {
+            this.currentPageSubject.next(1);
+            this.loadProducts();
+        }
     }
 
     setSortFilter(sortBy: keyof Product, order: 'asc' | 'desc') {
@@ -184,6 +193,7 @@ export class ProductStateService {
         if (this.isResettingFilters) return;
         const currentParams = this.filterParamsSubject.value;
         if (size === currentParams.limit) return;
+        DEFAULT_FILTER_PARAMS.limit = size;
         this.filterParamsSubject.next({ ...currentParams, limit: size });
         this.currentPageSubject.next(1);
         this.loadProducts();

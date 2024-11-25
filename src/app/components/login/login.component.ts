@@ -1,11 +1,27 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserStateService } from '../../state/user-state.service';
 
 @Component({
-  selector: 'app-login',
-  imports: [],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    imports: [ReactiveFormsModule]
 })
 export class LoginComponent {
+    loginForm: FormGroup;
 
+    constructor(private fb: FormBuilder, private userStateService: UserStateService) {
+        this.loginForm = this.fb.group({
+            username: ['', Validators.required],
+            password: ['', Validators.required]
+        });
+    }
+
+    onSubmit(): void {
+        if (this.loginForm.valid) {
+            const { username, password } = this.loginForm.value;
+            this.userStateService.login(username, password);
+        }
+    }
 }

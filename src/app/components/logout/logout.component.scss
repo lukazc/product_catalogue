@@ -1,20 +1,12 @@
-form {
+
+div {
     display: flex;
     flex-direction: column;
     width: 300px;
     margin: auto;
 
-    div {
-        margin-bottom: 15px;
-    }
-
-    label {
-        margin-bottom: 5px;
-    }
-
-    input {
-        padding: 8px;
-        font-size: 14px;
+    p {
+        margin-bottom: 10px;
     }
 
     button {

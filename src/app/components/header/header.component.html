@@ -1,13 +1,17 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-        <span class="app-title" routerLink="/">Catalogue</span>
+        <span class="app-title" (click)="onPressHome()">Catalogue</span>
         <div class="search-bar-container desktop">
             <app-search-bar [searchTerm]="(currentSearchQuery$ | async) || ''" (search)="onSearch($event)"></app-search-bar>
         </div>
         <div class="expander"></div>
-        <button class="cart-button" [matBadge]="totalProductsInCart$ | async" matBadgeOverlap="true" routerLink="/cart">
+        <button class="cart-button" [matBadge]="(totalProductsInCart$ | async) || null" matBadgeOverlap="true" routerLink="/cart">
             <div class="ripple-container" matRipple></div>
             <mat-icon>shopping_cart</mat-icon>
+        </button>
+        <button class="user-button" (click)="toggleUserForm()">
+            <div class="ripple-container" matRipple></div>
+            <mat-icon>account_circle</mat-icon>
         </button>
     </mat-toolbar-row>
     <mat-toolbar-row class="mobile-search-bar">
@@ -16,3 +20,7 @@
         </div>
     </mat-toolbar-row>
 </mat-toolbar>
+<div *ngIf="showUserForm" class="user-form-container">
+    <app-login *ngIf="!isLoggedIn"></app-login>
+    <app-logout *ngIf="isLoggedIn"></app-logout>
+</div>

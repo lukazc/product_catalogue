@@ -19,8 +19,7 @@ export class CartStateService {
         private userStateService: UserStateService
     ) {
         this.userStateService.user$.subscribe(user => {
-            const userId = userStateService.getUserId();
-            this.loadCart(userId);
+            this.loadCart(user?.id || 0);
         });
     }
 

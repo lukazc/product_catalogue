@@ -13,17 +13,13 @@ import { RouterLink } from '@angular/router';
     styleUrls: ['./cart.component.scss'],
     imports: [CommonModule, MatIcon, MatIconButton, MatButton, RouterLink]
 })
-export class CartComponent implements OnInit {
+export class CartComponent {
     cart$: Observable<LocalCart | null>;
     totalQuantity$: Observable<number>;
 
     constructor(private cartStateService: CartStateService) {
         this.cart$ = this.cartStateService.cart$;
         this.totalQuantity$ = this.cartStateService.totalQuantity$;
-    }
-
-    ngOnInit(): void {
-        // Initialization logic if needed
     }
 
     /**
