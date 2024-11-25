@@ -73,7 +73,7 @@ export class HeaderComponent {
 
     /**
      * Handles document click events to close the user form.
-     * @param event - The mouse event.
+     * @param {MouseEvent} event - The mouse event.
      */
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent): void {

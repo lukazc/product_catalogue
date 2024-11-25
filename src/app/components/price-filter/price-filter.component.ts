@@ -54,8 +54,8 @@ export class PriceFilterComponent implements OnInit, OnDestroy {
 
     /**
      * Formats the slider label.
-     * @param value - The value to format.
-     * @returns The formatted label.
+     * @param {number} value - The value to format.
+     * @returns {string} The formatted label.
      */
     formatLabel(value: number): string {
         if (value >= 1000) {

@@ -37,6 +37,10 @@ export class SelectComponent implements OnDestroy {
         this.resetFiltersSubscription.unsubscribe();
     }
 
+    /**
+     * Handles selection change events.
+     * @param event - The selection change event.
+     */
     onSelectionChange(event: Event): void {
         const selectedValue = (event.target as HTMLSelectElement).value;
         this.selectionChange.emit(selectedValue);

@@ -3,6 +3,9 @@ import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { FiltersComponent } from '../filters/filters.component';
 import { MatButton } from '@angular/material/button';
 
+/**
+ * Component for displaying the filters dialog.
+ */
 @Component({
     selector: 'app-filters-dialog',
     templateUrl: './filters-dialog.component.html',

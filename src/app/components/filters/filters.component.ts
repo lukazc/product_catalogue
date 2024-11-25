@@ -55,7 +55,7 @@ export class FiltersComponent {
 
     /**
      * Handles the sort change event.
-     * @param value - The selected sort value.
+     * @param {string} value - The selected sort value.
      */
     onSortChange(value: string): void {
         const sortBy: SortValue = value as SortValue;
@@ -81,7 +81,7 @@ export class FiltersComponent {
 
     /**
      * Handles the category change event.
-     * @param value - The selected category value.
+     * @param {string} value - The selected category value.
      */
     onCategoryChange(value: string): void {
         this.productStateService.setFilterParams({ category: value || undefined });

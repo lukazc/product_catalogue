@@ -6,9 +6,9 @@ import { switchMap, take } from 'rxjs/operators';
 
 /**
  * Interceptor to add Authorization header to HTTP requests.
- * @param req - The outgoing HTTP request.
- * @param next - The next handler in the chain.
- * @returns An observable of the HTTP event.
+ * @param {HttpRequest<any>} req - The outgoing HTTP request.
+ * @param {HttpHandlerFn} next - The next handler in the chain.
+ * @returns {Observable<HttpEvent<any>>} An observable of the HTTP event.
  */
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
     const userStateService = inject(UserStateService);

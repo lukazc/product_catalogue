@@ -30,6 +30,9 @@ export class SearchBarComponent implements OnDestroy {
         this.resetFiltersSubscription.unsubscribe();
     }
 
+    /**
+     * Emits the search term when the search button is clicked.
+     */
     onSearch() {
         this.searchSubject.next(this.searchTerm);
     }

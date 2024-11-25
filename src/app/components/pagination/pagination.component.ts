@@ -18,9 +18,9 @@ export class PaginationComponent {
 
     /**
      * Handles page change events.
-     * @param event - The page event.
+     * @param {PageEvent} event - The page event.
      */
-    onPageChange(event: PageEvent) {
+    onPageChange(event: PageEvent): void {
         this.pageSize = event.pageSize;
         this.pageChange.emit(event.pageIndex + 1);
         this.pageSizeChange.emit(event.pageSize);
