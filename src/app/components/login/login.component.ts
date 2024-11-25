@@ -18,6 +18,9 @@ export class LoginComponent {
         });
     }
 
+    /**
+     * Handles the form submission for login.
+     */
     onSubmit(): void {
         if (this.loginForm.valid) {
             const { username, password } = this.loginForm.value;

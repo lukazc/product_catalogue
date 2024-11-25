@@ -12,6 +12,9 @@ import { MatButton } from '@angular/material/button';
 export class FiltersDialogComponent {
     constructor(private dialogRef: MatDialogRef<FiltersDialogComponent>) {}
 
+    /**
+     * Closes the dialog.
+     */
     closeDialog(): void {
         this.dialogRef.close();
     }

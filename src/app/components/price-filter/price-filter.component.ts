@@ -27,6 +27,9 @@ export class PriceFilterComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * Initializes the component and sets up subscriptions.
+     */
     ngOnInit(): void {
         this.currentPriceRange$.pipe(take(1)).subscribe(range => {
             if (range) {
@@ -42,10 +45,18 @@ export class PriceFilterComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * Cleans up subscriptions when the component is destroyed.
+     */
     ngOnDestroy(): void {
         this.resetFiltersSubscription.unsubscribe();
     }
 
+    /**
+     * Formats the slider label.
+     * @param value - The value to format.
+     * @returns The formatted label.
+     */
     formatLabel(value: number): string {
         if (value >= 1000) {
             return Math.round(value / 1000) + 'k';

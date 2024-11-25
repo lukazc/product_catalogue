@@ -18,6 +18,9 @@ export class LogoutComponent {
         });
     }
 
+    /**
+     * Logs out the current user.
+     */
     onLogout(): void {
         this.userStateService.logout();
     }

@@ -16,6 +16,10 @@ export class PaginationComponent {
 
     pageSizes: number[] = [10, 20, 50, 100];
 
+    /**
+     * Handles page change events.
+     * @param event - The page event.
+     */
     onPageChange(event: PageEvent) {
         this.pageSize = event.pageSize;
         this.pageChange.emit(event.pageIndex + 1);
