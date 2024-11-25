@@ -7,10 +7,12 @@ import { UserService } from '../services/user.service';
     providedIn: 'root'
 })
 export class UserStateService {
-    private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+    private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(this.getUserFromLocalStorage());
     public user$: Observable<User | null> = this.userSubject.asObservable();
 
-    constructor(private userService: UserService) {}
+    constructor(private userService: UserService) {
+        this.user$.subscribe(user => this.saveUserToLocalStorage(user));
+    }
 
     /**
      * Sets the current user.
@@ -52,5 +54,26 @@ export class UserStateService {
      */
     logout(): void {
         this.clearUser();
+    }
+
+    /**
+     * Persists the user in local storage.
+     * @param user - The user to save.
+     */
+    private saveUserToLocalStorage(user: User | null): void {
+        if (user) {
+            localStorage.setItem('user', JSON.stringify(user));
+        } else {
+            localStorage.removeItem('user');
+        }
+    }
+
+    /**
+     * Retrieves the user from local storage.
+     * @returns The user object, or null if not found.
+     */
+    private getUserFromLocalStorage(): User | null {
+        const user = localStorage.getItem('user');
+        return user ? JSON.parse(user) : null;
     }
 }
