@@ -12,10 +12,11 @@ import { UserStateService } from '../../state/user-state.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { LoginComponent } from '../login/login.component';
 import { LogoutComponent } from '../logout/logout.component';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-header',
-    imports: [MatToolbarModule, SearchBarComponent, CommonModule, MatBadge, MatIcon, MatRipple, RouterLink, LoginComponent, LogoutComponent],
+    imports: [MatToolbarModule, SearchBarComponent, CommonModule, MatBadge, MatIcon, MatRipple, RouterLink, LoginComponent, LogoutComponent, MatTooltip],
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })
