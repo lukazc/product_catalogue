@@ -7,6 +7,10 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { authTokenRefreshInterceptor } from './interceptors/auth-token-refresh.interceptor';
 
+/**
+ * The application configuration.
+ * @type {ApplicationConfig}
+ */ 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),

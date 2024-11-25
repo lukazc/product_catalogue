@@ -56,15 +56,25 @@ export class HeaderComponent {
         }
     }
 
+    /**
+     * Navigates to the home page and clears filters.
+     */
     onPressHome(): void {
         this.productStateService.clearFilterParams();
         this.router.navigate(['/']);
     }
 
+    /**
+     * Toggles the visibility of the user form.
+     */
     toggleUserForm(): void {
         this.showUserForm = !this.showUserForm;
     }
 
+    /**
+     * Handles document click events to close the user form.
+     * @param {MouseEvent} event - The mouse event.
+     */
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent): void {
         const target = event.target as HTMLElement;

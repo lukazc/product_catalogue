@@ -48,6 +48,9 @@ export class ProductCatalogComponent implements OnInit {
         this.pageSize$ = this.productStateService.filterParams$.pipe(map(params => params.limit));
     }
 
+    /**
+     * Initializes the component and loads the products.
+     */
     ngOnInit() {
         this.productStateService.loadProducts();
         this.route.params.subscribe(params => {
@@ -58,10 +61,17 @@ export class ProductCatalogComponent implements OnInit {
         });
     }
 
+    /**
+     * Handles filter changes.
+     * @param filterParams - The new filter parameters.
+     */
     onFilterChange(filterParams: any): void {
         this.productStateService.loadFilteredProducts(filterParams);
     }
 
+    /**
+     * Opens the filters dialog.
+     */
     openFiltersDialog(): void {
         this.dialog.open(FiltersDialogComponent, {
             width: '100%',
@@ -71,10 +81,17 @@ export class ProductCatalogComponent implements OnInit {
         });
     }
 
+    /**
+     * Clears all filters.
+     */
     clearFilters(): void {
         this.productStateService.clearFilterParams();
     }
 
+    /**
+     * Opens the product details modal.
+     * @param productId - The ID of the product to display.
+     */
     openProductDetailsModal(productId: number): void {
         const dialog = this.dialog.open(ProductDetailModalComponent, {
             data: { productId },
@@ -90,10 +107,18 @@ export class ProductCatalogComponent implements OnInit {
         });
     };
 
+    /**
+     * Handles page change events.
+     * @param page - The new page number.
+     */
     onPageChange(page: number) {
         this.productStateService.setPage(page);
     }
 
+    /**
+     * Handles page size change events.
+     * @param size - The new page size.
+     */
     onPageSizeChange(size: number) {
         this.productStateService.setPageSize(size);
     }

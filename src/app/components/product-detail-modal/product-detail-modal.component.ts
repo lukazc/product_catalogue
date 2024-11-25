@@ -83,7 +83,7 @@ export class ProductDetailModalComponent implements OnInit, OnDestroy {
 
     /**
      * Moves to a specific slide in the product images.
-     * @param index The index of the slide to move to.
+     * @param index - The index of the slide to move to.
      */
     goToSlide(index: number): void {
         this.currentSlide = index;
@@ -91,7 +91,7 @@ export class ProductDetailModalComponent implements OnInit, OnDestroy {
 
     /**
      * Marks an image as loaded.
-     * @param index The index of the image that has loaded.
+     * @param index - The index of the image that has loaded.
      */
     onImageLoad(index: number): void {
         this.imageLoaded[index] = true;

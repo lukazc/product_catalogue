@@ -18,3 +18,10 @@
 
 3. Open your browser and navigate to `http://localhost:4200/`.
 
+## Documentation
+
+1. Generate the docs by running the following command:
+    ```bash
+    npm run compodoc
+    ```
+2. Open your browser and navigate to `http://127.0.0.1:8080`.

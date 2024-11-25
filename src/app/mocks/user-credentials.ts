@@ -1,4 +1,8 @@
 
+/**
+ * Mock user credentials
+ * @type {Array<{username: string, password: string}>}
+ */
 export const userCredentials = [
   {
     username: "emilys",
