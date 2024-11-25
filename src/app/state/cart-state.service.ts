@@ -19,7 +19,12 @@ export class CartStateService {
         private userStateService: UserStateService
     ) {
         this.userStateService.user$.subscribe(user => {
-            this.loadCart(user?.id || 0);
+            const anonymousCart = this.cartSubject.value;
+            if (user?.id && anonymousCart?.totalQuantity) {
+                this.mergeCart(user.id, anonymousCart)
+            } else {
+                this.loadCart(user?.id || 0);
+            }
         });
     }
 
@@ -116,8 +121,20 @@ export class CartStateService {
      */
     private updateCart(cart: LocalCart): void {
         const userId = this.userStateService.getUserId();
-        this.cartService.updateCart(userId, cart).subscribe(() => {
+        this.cartService.updateCart(userId, cart).subscribe((cart) => {
             this.cartSubject.next(cart);
         });
     }
+
+    /**
+     * Merges the anonymous cart with the user's cart.
+     * @param userId - The ID of the user.
+     * @param anonymousCart - The anonymous cart to merge.
+     */
+    private mergeCart(userId: number, anonymousCart: LocalCart): void {
+        this.cartService.mergeCarts(userId, anonymousCart).subscribe(cart => {
+            this.cartSubject.next(cart);
+        });
+    }
+    
 }
