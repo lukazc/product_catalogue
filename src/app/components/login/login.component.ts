@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserStateService } from '../../state/user-state.service';
+import { MatButton } from '@angular/material/button';
 
 /**
  * LoginComponent is responsible for handling the login form.
@@ -9,7 +10,7 @@ import { UserStateService } from '../../state/user-state.service';
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    imports: [ReactiveFormsModule]
+    imports: [ReactiveFormsModule, MatButton]
 })
 export class LoginComponent {
     loginForm: FormGroup;

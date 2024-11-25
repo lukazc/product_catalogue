@@ -1,17 +1,26 @@
-
 div {
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 100%;
+    max-width: 400px;
     margin: auto;
+    padding: 16px;
+    border: 1px solid var(--gray-400);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     p {
         margin-bottom: 10px;
+        font-weight: 500;
+        color: var(--gray-700);
+
+        &.email {
+            color: var(--gray-400);
+            font-weight: 400;
+        }
     }
 
     button {
-        padding: 10px;
-        font-size: 16px;
-        cursor: pointer;
+        width: 100%;
     }
 }
