@@ -10,6 +10,9 @@ let refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<st
 
 /**
  * Interceptor to handle token refresh on 401 Unauthorized errors.
+ * @param req - The outgoing HTTP request.
+ * @param next - The next handler in the chain.
+ * @returns An observable of the HTTP event.
  */
 export const authTokenRefreshInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
     const userStateService = inject(UserStateService);
