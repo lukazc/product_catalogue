@@ -94,7 +94,7 @@ export class CartService {
      * @returns The localStorage key for the user's cart.
      */
     private getCartKey(userId: number): string {
-        return `user-${userId}`;
+        return `cart-${userId}`;
     }
 
     /**
