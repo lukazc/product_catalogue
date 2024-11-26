@@ -7,6 +7,8 @@ import { Product } from '../models/product.model';
 describe('ProductStateService', () => {
   let service: ProductStateService;
   let productServiceSpy: jasmine.SpyObj<ProductService>;
+  
+  const mockCategories = [{ id: 1, name: 'Electronics', slug: 'electronics', url: 'http://example.com/electronics' }];
 
   beforeEach(() => {
     const spy = jasmine.createSpyObj('ProductService', ['getProductById', 'getAllProducts', 'getFilteredProducts', 'getCategories', 'filterProducts']);
@@ -18,8 +20,9 @@ describe('ProductStateService', () => {
       ]
     });
 
-    service = TestBed.inject(ProductStateService);
     productServiceSpy = TestBed.inject(ProductService) as jasmine.SpyObj<ProductService>;
+    productServiceSpy.getCategories.and.returnValue(of(mockCategories));
+    service = TestBed.inject(ProductStateService);
   });
 
   it('should be created', () => {
@@ -88,9 +91,6 @@ describe('ProductStateService', () => {
   });
 
   it('should load categories', () => {
-    const mockCategories = [{ id: 1, name: 'Electronics', slug: 'electronics', url: 'http://example.com/electronics' }];
-    productServiceSpy.getCategories.and.returnValue(of(mockCategories));
-
     service.loadCategories();
 
     service.productCategories$.subscribe(categories => {

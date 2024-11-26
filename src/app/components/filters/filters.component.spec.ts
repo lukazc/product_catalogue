@@ -1,8 +1,11 @@
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FiltersComponent } from './filters.component';
 import { ProductStateService } from '../../state/product-state.service';
 import { of } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { SelectComponent } from '../select/select.component';
+import { PriceFilterComponent } from '../price-filter/price-filter.component';
 
 describe('FiltersComponent', () => {
   let component: FiltersComponent;
@@ -10,10 +13,17 @@ describe('FiltersComponent', () => {
   let productStateServiceSpy: jasmine.SpyObj<ProductStateService>;
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('ProductStateService', ['setFilterParams', 'clearFilterParams', 'setSortFilter', 'clearSortFilter', 'productCategories$']);
+    const spy = jasmine.createSpyObj('ProductStateService', ['setFilterParams', 'clearFilterParams', 'setSortFilter', 'clearSortFilter'], {
+      productCategories$: of([]),
+      resetFilters$: of(null),
+      currentPriceRange$: of({ min: 0, max: 1000 }),
+      currentCategoryValue$: of(''),
+      currentSortValue$: of(''),
+      areFiltersActive$: of(false)
+    });
 
     await TestBed.configureTestingModule({
-      imports: [FiltersComponent],
+      imports: [CommonModule, MatIconModule, FiltersComponent, SelectComponent, PriceFilterComponent],
       providers: [
         { provide: ProductStateService, useValue: spy }
       ]
@@ -22,7 +32,6 @@ describe('FiltersComponent', () => {
     fixture = TestBed.createComponent(FiltersComponent);
     component = fixture.componentInstance;
     productStateServiceSpy = TestBed.inject(ProductStateService) as jasmine.SpyObj<ProductStateService>;
-    productStateServiceSpy.productCategories$ = of([]);
     fixture.detectChanges();
   });
 
