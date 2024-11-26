@@ -13,21 +13,21 @@ export interface Product {
     /** The category of the product. */
     category: string;
     /** The discount percentage of the product. */
-    discountPercentage: number;
+    discountPercentage?: number;
     /** The rating of the product. */
-    rating: number;
+    rating?: number;
     /** The stock quantity of the product. */
-    stock: number;
+    stock?: number;
     /** The tags associated with the product. */
-    tags: string[];
+    tags?: string[];
     /** The brand of the product. */
     brand?: string;
     /** The SKU of the product. */
-    sku: string;
+    sku?: string;
     /** The weight of the product. */
-    weight: number;
+    weight?: number;
     /** The dimensions of the product. */
-    dimensions: {
+    dimensions?: {
         /** The width of the product. */
         width: number;
         /** The height of the product. */
@@ -36,38 +36,38 @@ export interface Product {
         depth: number;
     };
     /** The warranty information of the product. */
-    warrantyInformation: string;
+    warrantyInformation?: string;
     /** The shipping information of the product. */
-    shippingInformation: string;
+    shippingInformation?: string;
     /** The availability status of the product. */
-    availabilityStatus: string;
+    availabilityStatus?: string;
     /** The reviews of the product. */
-    reviews: {
+    reviews?: {
         /** The rating given in the review. */
-        rating: number;
+        rating?: number;
         /** The comment in the review. */
-        comment: string;
+        comment?: string;
         /** The date of the review. */
-        date: string;
+        date?: string;
         /** The name of the reviewer. */
-        reviewerName: string;
+        reviewerName?: string;
         /** The email of the reviewer. */
-        reviewerEmail: string;
+        reviewerEmail?: string;
     }[];
     /** The return policy of the product. */
-    returnPolicy: string;
+    returnPolicy?: string;
     /** The minimum order quantity of the product. */
-    minimumOrderQuantity: number;
+    minimumOrderQuantity?: number;
     /** The metadata of the product. */
-    meta: {
+    meta?: {
         /** The creation date of the product. */
         createdAt: string;
         /** The last update date of the product. */
-        updatedAt: string;
+        updatedAt?: string;
         /** The barcode of the product. */
-        barcode: string;
+        barcode?: string;
         /** The QR code of the product. */
-        qrCode: string;
+        qrCode?: string;
     };
     /** The thumbnail image URL of the product. */
     thumbnail: string;
