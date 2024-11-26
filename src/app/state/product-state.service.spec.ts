@@ -2,13 +2,22 @@ import { TestBed } from '@angular/core/testing';
 import { ProductStateService } from './product-state.service';
 import { ProductService } from '../services/product.service';
 import { of } from 'rxjs';
-import { Product } from '../models/product.model';
+import { Product, ProductApiResponse } from '../models/product.model';
 
 describe('ProductStateService', () => {
   let service: ProductStateService;
   let productServiceSpy: jasmine.SpyObj<ProductService>;
   
   const mockCategories = [{ id: 1, name: 'Electronics', slug: 'electronics', url: 'http://example.com/electronics' }];
+  const mockProduct: Product = { id: 1, title: 'Test Product', description: 'Test Description', price: 100, thumbnail: '', images: [], category: '' };
+  const mockProducts: Product[] = [mockProduct];
+  const mockApiResponse: ProductApiResponse = {
+    products: mockProducts,
+    total: 1,
+    limit: 10,
+    skip: 0
+  }
+  
 
   beforeEach(() => {
     const spy = jasmine.createSpyObj('ProductService', ['getProductById', 'getAllProducts', 'getFilteredProducts', 'getCategories', 'filterProducts']);
@@ -23,6 +32,11 @@ describe('ProductStateService', () => {
     productServiceSpy = TestBed.inject(ProductService) as jasmine.SpyObj<ProductService>;
     productServiceSpy.getCategories.and.returnValue(of(mockCategories));
     service = TestBed.inject(ProductStateService);
+
+    productServiceSpy.getAllProducts.and.returnValue(of({ products: mockProducts, total: 1, limit: 10, skip: 0 }));
+    productServiceSpy.getFilteredProducts.and.returnValue(of({ products: mockProducts, total: 1, limit: 10, skip: 0 }));
+    productServiceSpy.getProductById.and.returnValue(of(mockProduct));
+    productServiceSpy.filterProducts.and.returnValue(mockApiResponse);
   });
 
   it('should be created', () => {
@@ -30,9 +44,6 @@ describe('ProductStateService', () => {
   });
 
   it('should load products', () => {
-    const mockProducts: Product[] = [{ id: 1, title: 'Test Product', description: 'Test Description', price: 100, thumbnail: '', images: [], category: '' }];
-    productServiceSpy.getFilteredProducts.and.returnValue(of({ products: mockProducts, total: 1, limit: 10, skip: 0 }));
-
     service.loadProducts();
 
     service.products$.subscribe(products => {
@@ -71,18 +82,12 @@ describe('ProductStateService', () => {
   });
 
   it('should get product by id', () => {
-    const mockProduct: Product = { id: 1, title: 'Test Product', description: 'Test Description', price: 100, thumbnail: '', images: [], category: '' };
-    productServiceSpy.getProductById.and.returnValue(of(mockProduct));
-
     service.getProductById(1).subscribe(product => {
       expect(product).toEqual(mockProduct);
     });
   });
 
   it('should load all products', () => {
-    const mockProducts: Product[] = [{ id: 1, title: 'Test Product', description: 'Test Description', price: 100, thumbnail: '', images: [], category: '' }];
-    productServiceSpy.getAllProducts.and.returnValue(of({ products: mockProducts, total: 1, limit: 10, skip: 0 }));
-
     service.loadAllProducts({ limit: 10, skip: 0, select: '' }).subscribe();
 
     service.products$.subscribe(products => {
@@ -99,11 +104,7 @@ describe('ProductStateService', () => {
   });
 
   it('should apply filters and set products', () => {
-    const mockProducts: Product[] = [{ id: 1, title: 'Test Product', description: 'Test Description', price: 100, thumbnail: '', images: [], category: '' }];
-    const mockResponse = { products: mockProducts, total: 1, limit: 10, skip: 0 };
-    productServiceSpy.filterProducts.and.returnValue(mockResponse);
-
-    service['applyFiltersAndSetProducts'](mockProducts, { limit: 10, skip: 0, select: '' });
+    service['applyFiltersAndSetProducts'](mockProducts, { limit: 10, skip: 0 });
 
     service.products$.subscribe(products => {
       expect(products).toEqual(mockProducts);
