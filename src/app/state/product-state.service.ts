@@ -9,12 +9,13 @@ import { Router } from '@angular/router';
 /**
  * The default filter parameters.
  */
-const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20, select: 'id,title,description,price,thumbnail,images,category' };
+export const DEFAULT_FILTER_PARAMS: FilterParams = { limit: 20, select: 'id,title,description,price,thumbnail,images,category' };
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProductStateService {
+    readonly DEFAULT_FILTER_PARAMS = DEFAULT_FILTER_PARAMS;
     // Indicates if products are being loaded
     private isLoadingSubject = new BehaviorSubject<boolean>(false);
     public isLoading$ = this.isLoadingSubject.asObservable();

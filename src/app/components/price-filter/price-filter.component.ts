@@ -38,7 +38,7 @@ export class PriceFilterComponent implements OnInit, OnDestroy {
         });
 
         this.priceForm.valueChanges.pipe(
-            debounceTime(300),
+            debounceTime(500),
             distinctUntilChanged()
         ).subscribe(values => {
             this.productStateService.setPriceRangeFilter(values.priceMin, values.priceMax);
