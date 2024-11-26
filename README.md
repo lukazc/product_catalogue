@@ -18,6 +18,12 @@
 
 3. Open your browser and navigate to `http://localhost:4200/`.
 
+## Running automated tests
+Run the following command:
+```bash
+npm run test
+```
+
 ## Documentation
 
 1. Generate the docs by running the following command:
